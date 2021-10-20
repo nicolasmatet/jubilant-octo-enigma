@@ -1,0 +1,36 @@
+
+.summary-subsection {
+  margin-left: 20px;
+}
+
+.mat-icon {
+  vertical-align: middle;
+}
+
+.summary-item {
+  display: flex;
+  align-items: center;
+  cursor: default;
+  -webkit-touch-callout: none; /* iOS Safari */
+  -webkit-user-select: none; /* Safari */
+  -khtml-user-select: none; /* Konqueror HTML */
+  -moz-user-select: none; /* Old versions of Firefox */
+  -ms-user-select: none; /* Internet Explorer/Edge */
+  user-select: none; /* Non-prefixed version, currently*/
+  line-height: 2;
+
+  .summary-title {
+    padding: 5px;
+    width: 100%;
+  }
+
+  .selected {
+    color: white;
+    background-color: #0d293e;
+  }
+}
+
+.summary-no-children {
+  margin-left: 24px;
+}
+

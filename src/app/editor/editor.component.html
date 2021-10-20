@@ -1,0 +1,20 @@
+<ng-container *ngIf="editing.length===0">
+  <div fxFill class="placholder">
+    Right-click on a paragraph to start editing
+  </div>
+</ng-container>
+
+<mat-tab-group [selectedIndex]="selected.value"
+               (selectedIndexChange)="selected.setValue($event)">
+  <mat-tab *ngFor="let reportPart of editing; let idx = index">
+    <ng-template mat-tab-label>
+      {{reportPart.title}}
+      <button mat-icon-button (click)="closeTab(idx); $event.stopPropagation()">
+        <mat-icon>close</mat-icon>
+      </button>
+    </ng-template>
+    <div class="editor-page">
+      <app-editor-page [reportPart]="reportPart"></app-editor-page>
+    </div>
+  </mat-tab>
+</mat-tab-group>

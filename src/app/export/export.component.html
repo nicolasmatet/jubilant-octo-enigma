@@ -1,0 +1,14 @@
+<mat-card>
+  <mat-card-content>
+    <app-tag-menu (change)="selectTags($event)"></app-tag-menu>
+    <div fxLayout="row" fxLayoutGap="12px">
+      <span *ngFor="let tag of selectedTags"> {{tag | tagTitlePipe}}</span>
+    </div>
+  </mat-card-content>
+</mat-card>
+
+
+<div style="visibility: hidden;">
+  <ng-template appPartHost></ng-template>
+</div>
+

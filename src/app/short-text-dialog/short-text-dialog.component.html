@@ -1,0 +1,36 @@
+<div class="modalContainer">
+
+  <form class="filename-form">
+    <div fxLayout="row" fxLayoutAlign="space-between center">
+
+      <div fxFlex fxLayout="row" fxLayoutAlign="start center">
+        <mat-form-field class="full-width">
+          <mat-label>FileName</mat-label>
+          <input matInput
+                 [formControl]="fileNameFormControl"
+                 [errorStateMatcher]="matcher"
+                 placeholder="Ex. myNewFile">
+          <mat-hint>{{data.message}}</mat-hint>
+<!--          <mat-error-->
+<!--            *ngIf="fileNameFormControl.hasError('pattern') && !fileNameFormControl.hasError('required')">-->
+<!--            Please enter a valid file name-->
+<!--          </mat-error>-->
+<!--          <mat-error *ngIf="fileNameFormControl.hasError('required')">-->
+<!--            File name <strong>required</strong>-->
+<!--          </mat-error>-->
+        </mat-form-field>
+      </div>
+
+      <button fxFlex type="submit" class="btn btn-primary createButton"
+              [disabled]="!fileNameFormControl.valid"
+              (click)="onClickOk()">
+        <span class="icon-algo icon-add"></span>
+        {{data.yesText}}
+      </button>
+
+
+    </div>
+
+
+  </form>
+</div>

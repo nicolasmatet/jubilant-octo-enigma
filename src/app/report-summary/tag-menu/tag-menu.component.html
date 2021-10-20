@@ -1,0 +1,18 @@
+<button mat-icon-button [matMenuTriggerFor]="contextMenuTemplate" matToolTip="Assign tags"
+[disabled]="!_taggedItems || _taggedItems.length===0">
+  <mat-icon>label</mat-icon>
+</button>
+
+<mat-menu #contextMenuTemplate="matMenu">
+  <ng-template matMenuContent>
+    <div  *ngFor="let tag of allTags; let idx = index" class="checkbox-wrapper">
+      <mat-checkbox
+                    [checked]="selected[idx]"
+                    [indeterminate]="indeterminate[idx] && !selected[idx]"
+                    (change)="onSelection($event, tag)"
+                    (click)="$event.stopPropagation()">
+        {{tag | tagTitlePipe}}
+      </mat-checkbox>
+    </div>
+  </ng-template>
+</mat-menu>

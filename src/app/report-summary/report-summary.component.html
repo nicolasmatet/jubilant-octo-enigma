@@ -1,0 +1,78 @@
+<div style="visibility: hidden; position: fixed"
+     [style.left]="contextMenu.contextMenuPosition.x"
+     [style.top]="contextMenu.contextMenuPosition.y"
+     [matMenuTriggerFor]="contextMenuTemplate">
+</div>
+<mat-menu #contextMenuTemplate="matMenu">
+  <ng-template matMenuContent let-summaryPart="summaryPart">
+    <button *ngFor="let menuItem of contextMenu.menuItems"
+            mat-menu-item (click)="menuItem.callback(summaryPart)">
+      {{menuItem.title}}
+      <mat-icon>{{menuItem.icon}}</mat-icon>
+    </button>
+  </ng-template>
+</mat-menu>
+
+
+<mat-card>
+  <mat-card-header>
+    <app-tag-menu [taggedItems]="selectionModel.selectionChange | async"></app-tag-menu>
+    <button mat-button (click)="export()">Export</button>
+  </mat-card-header>
+  <mat-card-content>
+    <ng-container [ngTemplateOutlet]="subList"
+                  [ngTemplateOutletContext]="{summary: summary, allDropListsIds:allDropListsIds}">
+    </ng-container>
+  </mat-card-content>
+</mat-card>
+
+<ng-template #partNoChildren let-summary="summary">
+  <div class="summary-item summary-no-children">
+    <ng-container [ngTemplateOutlet]="partTitle" [ngTemplateOutletContext]="{summary: summary}"></ng-container>
+  </div>
+</ng-template>
+
+<ng-template #partClosed let-summary="summary">
+  <div class="summary-item" (click)="toogleExpended(summary)">
+    <mat-icon>arrow_right</mat-icon>
+    <ng-container [ngTemplateOutlet]="partTitle" [ngTemplateOutletContext]="{summary: summary}"></ng-container>
+  </div>
+</ng-template>
+
+<ng-template #partExpended let-summary="summary">
+  <div class="summary-item" (click)="toogleExpended(summary)">
+    <mat-icon>arrow_drop_down</mat-icon>
+    <ng-container [ngTemplateOutlet]="partTitle" [ngTemplateOutletContext]="{summary: summary}"></ng-container>
+  </div>
+  <div class="summary-subsection">
+    <ng-container [ngTemplateOutlet]="subList"
+                  [ngTemplateOutletContext]="{summary: summary, allDropListsIds:allDropListsIds}">
+    </ng-container>
+  </div>
+</ng-template>
+
+<ng-template #partTitle let-summary="summary">
+  <div class="summary-title" [class.selected]="summary.selected" (click)="select($event, summary); $event.stopPropagation()">
+    {{summary.reportPart.title}}
+    <div fxLayout="'row">
+      <span class="tag" *ngFor="let tag of summary.reportPart.tags">{{tag | tagTitlePipe}}</span>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #subList let-summary="summary" let-allDropListsIds="allDropListsIds">
+  <div cdkDropList
+       [cdkDropListData]="summary"
+       [cdkDropListConnectedTo]="allDropListsIds"
+       (cdkDropListDropped)="drop($event)">
+    <div cdkDrag
+         *ngFor="let summaryPart of summary.children"
+         (contextmenu)="contextMenu.onContextMenu($event, summaryPart)">
+      <ng-container [ngTemplateOutlet]=
+                      "summaryPart.children.length? (summaryPart.expended? partExpended:partClosed) :partNoChildren"
+                    [ngTemplateOutletContext]="{summary: summaryPart}"></ng-container>
+    </div>
+  </div>
+</ng-template>
+
+

@@ -1,0 +1,17 @@
+.report-summary {
+  position: fixed;
+  top: 20px;
+  margin-left: 20px;
+  width: 450px;
+}
+
+.report-editor {
+  height: 100%;
+  max-height: 80%;
+  position: absolute;
+  width: calc(100% - 500px);
+  margin-left: 500px;
+}
+
+.report-view {
+}

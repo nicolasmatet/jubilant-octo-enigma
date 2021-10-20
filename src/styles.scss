@@ -1,1 +1,18 @@
 /* You can add global styles to this file, and also import other style files */
+@import './theme.scss';
+
+$primary: mat-color($custom-primary);
+$primary-lighter: mat-color($custom-primary, lighter);
+$primary-darker: mat-color($custom-primary, darker);
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+.tag {
+  margin-left: 5px;
+  padding: 0 5px;
+  border-radius: 6px;
+  color: #474747;
+  background-color: lightgray;
+  font-size: x-small;
+}
