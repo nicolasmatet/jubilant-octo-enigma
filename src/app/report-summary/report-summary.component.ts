@@ -29,6 +29,7 @@ export class ReportSummaryComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.selectionModel.clear();
     this.summary = new SummaryPart(this.report, {expended: true});
     this.allDropListsIds = this.getIdsRecursive(this.summary);
     console.log("this.allDropListsIds", this.allDropListsIds);
@@ -42,8 +43,12 @@ export class ReportSummaryComponent implements OnInit {
     if (event.ctrlKey) {
       this.selectionModel.select(summaryPart);
     } else {
-      this.selectionModel.clear();
-      this.selectionModel.select(summaryPart);
+      if (this.selectionModel.isSelected(summaryPart)) {
+        this.selectionModel.clear();
+      } else {
+        this.selectionModel.clear();
+        this.selectionModel.select(summaryPart);
+      }
     }
   }
 

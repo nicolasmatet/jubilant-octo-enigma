@@ -1,7 +1,7 @@
 <div fxLayout="column" fxLayoutGap="20px">
   <app-tag-menu [taggedItems]="[taggedItem]">Select tags</app-tag-menu>
   <div fxLayout="row" fxLayoutGap="12px">
-    <span *ngFor="let tag of taggedItem.reportPart.tags"> {{tag | tagTitlePipe}}</span>
+    <span class="tag" *ngFor="let tag of taggedItem.reportPart.tags"> {{tag | tagTitlePipe}}</span>
   </div>
 
   <button mat-raised-button (click)="export()" [style.align]="'rtl'">Export</button>

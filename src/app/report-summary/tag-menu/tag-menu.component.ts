@@ -11,7 +11,7 @@ import {SummaryPart} from "../models/summaryPart.interface";
   styleUrls: ['./tag-menu.component.scss']
 })
 export class TagMenuComponent implements OnInit {
-  @Input() disabled: boolean= false;
+  @Input() disabled: boolean = false;
 
   @Input() set taggedItems(value: SummaryPart[] | null) {
     if (value === null) {
@@ -19,6 +19,7 @@ export class TagMenuComponent implements OnInit {
     }
 
     this._taggedItems = value.map(v => v.reportPart);
+    console.log("this._taggedItems", this._taggedItems);
     this.updateCheckboxesStates(this.allTags);
   }
 

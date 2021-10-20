@@ -1,12 +1,13 @@
 <app-context-menu [contextMenu]="contextMenu"></app-context-menu>
 
 <mat-card>
-  <mat-card-header>
+  <mat-card-header fxLayout="row">
     <app-tag-menu [taggedItems]="selectionModel.selectionChange | async"
-                  [disabled]="(selectionModel.selectionChange | async)?.length===0"
+                  [disabled]="(selectionModel.selectionChange | async)===null
+                  || (selectionModel.selectionChange | async)?.length===0"
                   matTooltip='Assign tags'
     ></app-tag-menu>
-    <button mat-raised-button (click)="export()">Export</button>
+    <button mat-raised-button color="primary" (click)="export()">Export</button>
   </mat-card-header>
   <mat-card-content>
     <ng-container [ngTemplateOutlet]="subList"

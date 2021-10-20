@@ -7,10 +7,11 @@ export class MultipleSelectionModel extends SelectionModel<SummaryPart> {
   selectionChange = new Subject<SummaryPart[]>();
 
   select(value: SummaryPart) {
-    if (!this.selected.some(v => v.uId === value.uId)) {
+    if (!this.isSelected(value)) {
       value.selected = true;
       this.selected.push(value);
-      this.selectionChange.next(this.selected);
+      console.log("this.selected", this.selected);
+      this.selectionChange.next([...this.selected]);
     } else {
       this.unselect(value);
     }
@@ -27,5 +28,9 @@ export class MultipleSelectionModel extends SelectionModel<SummaryPart> {
     this.selected.forEach(v => v.selected = false);
     this.selected = [];
     this.selectionChange.next([]);
+  }
+
+  isSelected(value: SummaryPart): boolean {
+    return this.selected.some(v => v.uId === value.uId);
   }
 }
