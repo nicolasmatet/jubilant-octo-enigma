@@ -1,4 +1,8 @@
+@use 'sass:map';
+@use '~@angular/material' as mat;
 @import '../../theme.scss';
+$color-config:    mat.get-color-config($custom-theme);
+$primary-palette: map.get($color-config, 'primary');
 
 .summary-subsection {
   margin-left: 20px;
@@ -27,7 +31,7 @@
 
   .selected {
     color: white;
-    background-color: mat-color($custom-primary);
+    background-color: mat.get-color-from-palette($primary-palette, 500);;
   }
 }
 
