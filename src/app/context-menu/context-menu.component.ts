@@ -1,5 +1,5 @@
 import {AfterViewInit, Component, Input, OnInit, ViewChild} from '@angular/core';
-import {ContextMenu} from "../models/context-menu.model";
+import {ContextMenu} from "./models/context-menu.model";
 import {MatMenuTrigger} from "@angular/material/menu";
 
 @Component({

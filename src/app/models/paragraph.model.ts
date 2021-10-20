@@ -4,4 +4,5 @@ import {ReportParagraphComponent} from "../report-paragraph/report-paragraph.com
 
 export class Paragraph extends ReportPart implements EditableReportPart {
   component: Type<ReportComponent> = ReportParagraphComponent;
+  icon = 'segment'
 }

@@ -32,6 +32,7 @@ import {MatTooltipModule} from "@angular/material/tooltip";
 import { ExportComponent } from './export/export.component';
 import { ContextMenuComponent } from './context-menu/context-menu.component';
 import {PortalModule} from "@angular/cdk/portal";
+import {MatToolbarModule} from "@angular/material/toolbar";
 
 @NgModule({
   declarations: [
@@ -69,7 +70,8 @@ import {PortalModule} from "@angular/cdk/portal";
     MatCardModule,
     MatButtonModule,
     MatCheckboxModule,
-    MatTooltipModule
+    MatTooltipModule,
+    MatToolbarModule
   ],
   providers: [],
   bootstrap: [AppComponent]

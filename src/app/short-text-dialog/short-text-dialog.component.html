@@ -21,10 +21,9 @@
         </mat-form-field>
       </div>
 
-      <button fxFlex type="submit" class="btn btn-primary createButton"
+      <button mat-button mat-raised-button fxFlex type="submit"
               [disabled]="!fileNameFormControl.valid"
               (click)="onClickOk()">
-        <span class="icon-algo icon-add"></span>
         {{data.yesText}}
       </button>
 

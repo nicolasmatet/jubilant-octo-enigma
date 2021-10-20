@@ -17,6 +17,7 @@ export abstract class ReportPart {
   }
 
   component!: Type<ReportComponent>;
+  icon: string = '';
   content: string = '';
 
   tags: ReportTag[] = [];

@@ -6,6 +6,8 @@ import {SummaryContextMenuService} from "../report-summary/services/summary-cont
 import {SelectionModel} from "../models/selection.model";
 import {SummaryPart} from "../report-summary/models/summaryPart.interface";
 import {MultipleSelectionModel} from "../report-summary/models/multipleSelection.model";
+import {ExportComponent} from "../export/export.component";
+import {MatDialog} from "@angular/material/dialog";
 
 @Component({
   selector: 'app-dtp-main',
@@ -20,11 +22,20 @@ export class DtpMainComponent implements OnInit {
   selectionModel: SelectionModel<SummaryPart> = new MultipleSelectionModel();
 
   constructor(private reportLoader: ReportLoaderService,
-              private contextMenuService: SummaryContextMenuService) {
+              private contextMenuService: SummaryContextMenuService,
+              private dialog: MatDialog) {
     this.report = this.reportLoader.getReport();
   }
 
   ngOnInit(): void {
   }
 
+  export() {
+    this.dialog.open(ExportComponent, {
+      data: {
+        reportPart: this.report,
+        exporter: this.exporter
+      }
+    });
+  }
 }

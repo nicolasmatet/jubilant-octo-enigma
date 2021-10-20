@@ -4,7 +4,7 @@ import {SummaryPart} from "./models/summaryPart.interface";
 import {CdkDragDrop, CdkDragEnter, CdkDragExit, moveItemInArray} from "@angular/cdk/drag-drop";
 import {MatMenuTrigger} from "@angular/material/menu";
 import {SummaryContextMenuService} from "./services/summary-context-menu.service";
-import {ContextMenu} from "../models/context-menu.model";
+import {ContextMenu} from "../context-menu/models/context-menu.model";
 import {MultipleSelectionModel} from "./models/multipleSelection.model";
 import {SelectionModel} from "../models/selection.model";
 import {ExportComponent} from "../export/export.component";
@@ -18,7 +18,6 @@ import {MatDialog} from "@angular/material/dialog";
 })
 export class ReportSummaryComponent implements OnInit {
   @Input() report!: ReportPart;
-  @Input() exporter!: ExportModel;
   @Input() contextMenu!: ContextMenu<SummaryPart>;
   @Input() selectionModel!: SelectionModel<SummaryPart>;
 
@@ -50,15 +49,6 @@ export class ReportSummaryComponent implements OnInit {
         this.selectionModel.select(summaryPart);
       }
     }
-  }
-
-  export() {
-    this.dialog.open(ExportComponent, {
-      data: {
-        reportPart: this.report,
-        exporter: this.exporter
-      }
-    });
   }
 
   drop(event: CdkDragDrop<SummaryPart, any>) {

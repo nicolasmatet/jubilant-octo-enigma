@@ -1,3 +1,4 @@
+@import '../../theme.scss';
 
 .summary-subsection {
   margin-left: 20px;
@@ -26,7 +27,7 @@
 
   .selected {
     color: white;
-    background-color: #0d293e;
+    background-color: mat-color($custom-primary);
   }
 }
 

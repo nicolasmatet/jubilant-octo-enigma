@@ -1,19 +1,28 @@
-<div class="report-summary">
-  <app-report-summary
-    [report]="report"
-    [exporter]="exporter"
-    [contextMenu]="contextMenu"
-    [selectionModel]="selectionModel"
-  >
-  </app-report-summary>
+<mat-toolbar color="primary">
+  <span>
+    <mat-icon>task</mat-icon>
+    <span>DTP Leaf</span>
+   </span>
+  <span fxFlex="1 1 auto"></span>
+
+  <button mat-raised-button (click)="export()">Export</button>
+
+</mat-toolbar>
+
+<div fxLayout="row">
+  <div class="report-summary">
+    <app-report-summary
+      [report]="report"
+      [contextMenu]="contextMenu"
+      [selectionModel]="selectionModel"
+    >
+    </app-report-summary>
+  </div>
+
+  <div class="report-editor">
+    <app-editor></app-editor>
+  </div>
 </div>
-
-<div class="report-editor">
-  <app-editor></app-editor>
-</div>
-
-
-
 
 
 

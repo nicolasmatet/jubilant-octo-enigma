@@ -7,7 +7,7 @@ import {ReportPart} from "../../models/reportPart.model";
 import {MatDialog} from "@angular/material/dialog";
 import {EditorService} from "../../editor/editor.service";
 import {SummaryContextMenu} from "../models/summary-context-menu.model";
-import {ContextMenu} from "../../models/context-menu.model";
+import {ContextMenu} from "../../context-menu/models/context-menu.model";
 
 
 @Injectable({
@@ -21,9 +21,9 @@ export class SummaryContextMenuService {
   getSummaryContextMenu(): ContextMenu<SummaryPart> {
     const newMenu = new SummaryContextMenu();
     newMenu.menuItems = [
-      {title: 'Edit', icon: 'menuItem', callback: (summaryPart: SummaryPart) => this.onClickEdit(summaryPart)},
-      {title: 'New Section', icon: '', callback: (summaryPart: SummaryPart) => this.onClickNewSection(summaryPart)},
-      {title: 'New Paragraph', icon: '', callback: (summaryPart: SummaryPart) => this.onClickNewParagraph(summaryPart)},
+      {title: 'Edit', icon: 'edit_note', callback: (summaryPart: SummaryPart) => this.onClickEdit(summaryPart)},
+      {title: 'New Section', icon: 'create_new_folder', callback: (summaryPart: SummaryPart) => this.onClickNewSection(summaryPart)},
+      {title: 'New Paragraph', icon: 'post_add', callback: (summaryPart: SummaryPart) => this.onClickNewParagraph(summaryPart)},
       {title: 'Rename', icon: 'edit', callback: (summaryPart: SummaryPart) => this.onClickRename(summaryPart)},
       {title: 'Delete', icon: 'delete', callback: (summaryPart: SummaryPart) => this.onClickDelete(summaryPart)}
     ];
