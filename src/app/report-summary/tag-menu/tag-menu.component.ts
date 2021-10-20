@@ -11,6 +11,7 @@ import {SummaryPart} from "../models/summaryPart.interface";
   styleUrls: ['./tag-menu.component.scss']
 })
 export class TagMenuComponent implements OnInit {
+  @Input() disabled: boolean= false;
 
   @Input() set taggedItems(value: SummaryPart[] | null) {
     if (value === null) {

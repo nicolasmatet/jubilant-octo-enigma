@@ -1,14 +1,20 @@
-<mat-card>
-  <mat-card-content>
-    <app-tag-menu (change)="selectTags($event)"></app-tag-menu>
-    <div fxLayout="row" fxLayoutGap="12px">
-      <span *ngFor="let tag of selectedTags"> {{tag | tagTitlePipe}}</span>
-    </div>
-  </mat-card-content>
-</mat-card>
+<div fxLayout="column" fxLayoutGap="20px">
+  <app-tag-menu [taggedItems]="[taggedItem]">Select tags</app-tag-menu>
+  <div fxLayout="row" fxLayoutGap="12px">
+    <span *ngFor="let tag of taggedItem.reportPart.tags"> {{tag | tagTitlePipe}}</span>
+  </div>
 
-
-<div style="visibility: hidden;">
-  <ng-template appPartHost></ng-template>
+  <button mat-raised-button (click)="export()" [style.align]="'rtl'">Export</button>
 </div>
+
+
+<iframe #iframe style="visibility: hidden;"></iframe>
+
+<!--<ng-template #templatePortalContent>-->
+<!--  <div [ngTemplateOutlet]="rootHost"></div>-->
+<!--</ng-template>-->
+<ng-template #rootHost let-exporterSelection="exporterSelection">
+  <app-report [report]="exporterSelection"></app-report>
+</ng-template>
+
 

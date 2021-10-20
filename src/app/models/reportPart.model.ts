@@ -1,7 +1,7 @@
 import {ReportTag} from "./reportTag.model";
 import {Type} from "@angular/core";
 import * as uuid from 'uuid';
-import {ExporterSelection} from "../export/model/reportExport.model";
+import {ExporterSelection} from "../export/model/exporterSelection.model";
 
 export interface ReportComponent {
   selection: ExporterSelection;

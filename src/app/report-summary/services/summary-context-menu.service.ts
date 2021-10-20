@@ -6,10 +6,8 @@ import {MatDialogRef} from "@angular/material/dialog/dialog-ref";
 import {ReportPart} from "../../models/reportPart.model";
 import {MatDialog} from "@angular/material/dialog";
 import {EditorService} from "../../editor/editor.service";
-import {MatMenuTrigger} from "@angular/material/menu";
 import {SummaryContextMenu} from "../models/summary-context-menu.model";
 import {ContextMenu} from "../../models/context-menu.model";
-
 
 
 @Injectable({
@@ -20,8 +18,8 @@ export class SummaryContextMenuService {
   constructor(private dialog: MatDialog, private editor: EditorService) {
   }
 
-  getContextMenu(contextMenu: MatMenuTrigger): ContextMenu<SummaryPart> {
-    const newMenu = new SummaryContextMenu(contextMenu);
+  getSummaryContextMenu(): ContextMenu<SummaryPart> {
+    const newMenu = new SummaryContextMenu();
     newMenu.menuItems = [
       {title: 'Edit', icon: 'menuItem', callback: (summaryPart: SummaryPart) => this.onClickEdit(summaryPart)},
       {title: 'New Section', icon: '', callback: (summaryPart: SummaryPart) => this.onClickNewSection(summaryPart)},

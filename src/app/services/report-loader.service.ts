@@ -52,6 +52,7 @@ export class ReportLoaderService {
       'Etiam a eleifend mi. Integer et lectus nec lacus finibus vehicula.';
 
     const allTags = this.tagService.getAllTags();
+    section1.tags = [allTags[0]];
     pC.tags = [allTags[0], allTags[1]];
     subSection.addChildren(pB, pC);
     section1.addChildren(pA, subSection);

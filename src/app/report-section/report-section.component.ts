@@ -1,7 +1,7 @@
 import {Component, ComponentFactoryResolver, OnInit, ViewChild} from '@angular/core';
 import {ReportComponent, ReportPart} from "../models/reportPart.model";
 import {PartHostDirective} from "../directives/part-host.directive";
-import {ExporterSelection} from "../export/model/reportExport.model";
+import {ExporterSelection} from "../export/model/exporterSelection.model";
 
 @Component({
   selector: 'app-report-section',

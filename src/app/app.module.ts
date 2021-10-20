@@ -30,6 +30,8 @@ import {TagMenuComponent} from './report-summary/tag-menu/tag-menu.component';
 import {MatCheckboxModule} from "@angular/material/checkbox";
 import {MatTooltipModule} from "@angular/material/tooltip";
 import { ExportComponent } from './export/export.component';
+import { ContextMenuComponent } from './context-menu/context-menu.component';
+import {PortalModule} from "@angular/cdk/portal";
 
 @NgModule({
   declarations: [
@@ -45,7 +47,8 @@ import { ExportComponent } from './export/export.component';
     EditorPageComponent,
     TagTitlePipe,
     TagMenuComponent,
-    ExportComponent
+    ExportComponent,
+    ContextMenuComponent
   ],
   imports: [
     CommonModule,
@@ -53,6 +56,7 @@ import { ExportComponent } from './export/export.component';
     BrowserAnimationsModule,
     AppRoutingModule,
     FlexModule,
+    PortalModule,
     MatIconModule,
     DragDropModule,
     MatMenuModule,

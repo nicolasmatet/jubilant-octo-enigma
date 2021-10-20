@@ -7,33 +7,31 @@ import {SummaryContextMenuService} from "./services/summary-context-menu.service
 import {ContextMenu} from "../models/context-menu.model";
 import {MultipleSelectionModel} from "./models/multipleSelection.model";
 import {SelectionModel} from "../models/selection.model";
+import {ExportComponent} from "../export/export.component";
+import {ExportModel} from "../export/model/export.model";
+import {MatDialog} from "@angular/material/dialog";
 
 @Component({
   selector: 'app-report-summary',
   templateUrl: './report-summary.component.html',
   styleUrls: ['./report-summary.component.scss']
 })
-export class ReportSummaryComponent implements OnInit, AfterViewInit {
+export class ReportSummaryComponent implements OnInit {
   @Input() report!: ReportPart;
+  @Input() exporter!: ExportModel;
+  @Input() contextMenu!: ContextMenu<SummaryPart>;
+  @Input() selectionModel!: SelectionModel<SummaryPart>;
 
   summary!: SummaryPart;
   allDropListsIds!: string[];
-  @ViewChild(MatMenuTrigger) contextMenuTrigger!: MatMenuTrigger;
-  contextMenu!: ContextMenu<SummaryPart>;
-  selectionModel: SelectionModel<SummaryPart> = new MultipleSelectionModel();
 
-  constructor(private contextMenuService: SummaryContextMenuService) {
+  constructor(private dialog: MatDialog) {
   }
 
   ngOnInit(): void {
-    this.contextMenu = this.contextMenuService.getContextMenu(this.contextMenuTrigger);
     this.summary = new SummaryPart(this.report, {expended: true});
     this.allDropListsIds = this.getIdsRecursive(this.summary);
     console.log("this.allDropListsIds", this.allDropListsIds);
-  }
-
-  ngAfterViewInit() {
-    this.contextMenu = this.contextMenuService.getContextMenu(this.contextMenuTrigger);
   }
 
   toogleExpended(summaryPart: SummaryPart) {
@@ -50,7 +48,12 @@ export class ReportSummaryComponent implements OnInit, AfterViewInit {
   }
 
   export() {
-    this.exportService.export(report);
+    this.dialog.open(ExportComponent, {
+      data: {
+        reportPart: this.report,
+        exporter: this.exporter
+      }
+    });
   }
 
   drop(event: CdkDragDrop<SummaryPart, any>) {

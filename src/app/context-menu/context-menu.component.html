@@ -1,0 +1,14 @@
+<div style="visibility: hidden; position: absolute"
+     [style.left]="contextMenu.contextMenuPosition.x"
+     [style.top]="contextMenu.contextMenuPosition.y"
+     [matMenuTriggerFor]="contextMenuTemplate">
+</div>
+<mat-menu #contextMenuTemplate="matMenu">
+  <ng-template matMenuContent let-summaryPart="summaryPart">
+    <button *ngFor="let menuItem of contextMenu.menuItems"
+            mat-menu-item (click)="menuItem.callback(summaryPart)">
+      {{menuItem.title}}
+      <mat-icon>{{menuItem.icon}}</mat-icon>
+    </button>
+  </ng-template>
+</mat-menu>

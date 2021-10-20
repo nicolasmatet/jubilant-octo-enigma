@@ -2,7 +2,7 @@ import {Component, ComponentFactoryResolver, Input, OnInit, ViewChild} from '@an
 import {ReportLoaderService} from "../services/report-loader.service";
 import {PartHostDirective} from "../directives/part-host.directive";
 import {ReportComponent, ReportPart} from "../models/reportPart.model";
-import {ExporterSelection} from "../export/model/reportExport.model";
+import {ExporterSelection} from "../export/model/exporterSelection.model";
 
 @Component({
   selector: 'app-report',
@@ -13,6 +13,7 @@ export class ReportMainComponent implements OnInit {
 
   @Input() report!: ExporterSelection;
   @ViewChild(PartHostDirective, {static: true}) rootHost!: PartHostDirective;
+
 
   constructor(private componentFactoryResolver: ComponentFactoryResolver) {
   }
@@ -25,6 +26,7 @@ export class ReportMainComponent implements OnInit {
   }
 
   renderReportPart(selection: ExporterSelection) {
+    console.log("exporting", selection);
     const componentFactory = this.componentFactoryResolver.resolveComponentFactory(selection.reportPart.component);
     const componentRef = this.rootHost.viewContainerRef.createComponent<ReportComponent>(componentFactory);
     componentRef.instance.selection = selection;
