@@ -9,8 +9,11 @@
 
 </mat-toolbar>
 
-<div fxLayout="row">
-  <div class="report-summary">
+<div [fxLayout.gt-md]="'row'" [fxLayout.lt-md]="'column'" >
+  <div [fxFlex.gt-md]="'1 1 400px'"
+       [fxFlex.lt-md]="'0 1 400px'"
+       [class.gt-md]="'report-summary'"
+       [class.lt-md]="'report-summary-sm'">
     <app-report-summary
       [report]="report"
       [contextMenu]="contextMenu"
