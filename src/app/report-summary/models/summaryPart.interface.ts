@@ -9,6 +9,10 @@ export class SummaryPart {
   parent: SummaryPart | null = null;
   uId: string;
 
+  parentDropList!: string;
+  childDropList!: string;
+  connectedDropList!: string[];
+
   constructor(reportPart: ReportPart, options: any) {
     this.reportPart = reportPart;
     this.uId = uuid.v4();

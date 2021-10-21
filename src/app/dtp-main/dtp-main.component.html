@@ -1,15 +1,15 @@
 <mat-toolbar color="primary">
-  <span>
-    <mat-icon>task</mat-icon>
-    <span>DTP Leaf</span>
-   </span>
+  <span>    <mat-icon>task</mat-icon>DTP Leaf</span>
   <span fxFlex="1 1 auto"></span>
 
-  <button mat-raised-button (click)="export()">Export</button>
+  <button mat-raised-button (click)="export()">
+    <mat-icon>file_download</mat-icon>
+    Download report
+  </button>
 
 </mat-toolbar>
 
-<div [fxLayout.gt-md]="'row'" [fxLayout.lt-md]="'column'" >
+<div [fxLayout.gt-md]="'row'" [fxLayout.lt-md]="'column'">
   <div [fxFlex.gt-md]="'1 1 400px'"
        [fxFlex.lt-md]="'0 1 400px'"
        [class.gt-md]="'report-summary'"

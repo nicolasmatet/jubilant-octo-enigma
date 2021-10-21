@@ -10,6 +10,7 @@ import {SelectionModel} from "../models/selection.model";
 import {ExportComponent} from "../export/export.component";
 import {ExportModel} from "../export/model/export.model";
 import {MatDialog} from "@angular/material/dialog";
+import {DragDropModel} from "./models/dragDrop.model";
 
 @Component({
   selector: 'app-report-summary',
@@ -20,18 +21,21 @@ export class ReportSummaryComponent implements OnInit {
   @Input() report!: ReportPart;
   @Input() contextMenu!: ContextMenu<SummaryPart>;
   @Input() selectionModel!: SelectionModel<SummaryPart>;
-
+  dragDropModel: DragDropModel;
   summary!: SummaryPart;
-  allDropListsIds!: string[];
+  allDropListsParentIds!: string[];
 
-  constructor(private dialog: MatDialog) {
+  constructor() {
+    this.dragDropModel = new DragDropModel();
   }
 
   ngOnInit(): void {
     this.selectionModel.clear();
     this.summary = new SummaryPart(this.report, {expended: true});
-    this.allDropListsIds = this.getIdsRecursive(this.summary);
-    console.log("this.allDropListsIds", this.allDropListsIds);
+    this.allDropListsParentIds = this.dragDropModel.allDropListsParentIds(this.summary);
+    console.log("this.summary", this.summary);
+    this.dragDropModel.assignDropListIds(this.summary, this.allDropListsParentIds);
+    console.log("this.summary", this.summary);
   }
 
   toogleExpended(summaryPart: SummaryPart) {
@@ -51,45 +55,9 @@ export class ReportSummaryComponent implements OnInit {
     }
   }
 
-  drop(event: CdkDragDrop<SummaryPart, any>) {
-    console.log("dropped", event);
-    if (this.canBeDropped(event)) {
-      const movingItem: SummaryPart = event.item.data;
-      event.container.data.children.push(movingItem);
-      event.previousContainer.data.children = event.previousContainer.data.children
-        .filter((child: SummaryPart) => child.uId !== movingItem.uId);
-    } else {
-      moveItemInArray(
-        event.container.data.children,
-        event.previousIndex,
-        event.currentIndex
-      );
-    }
+  getConnected(dropList: string[], summary: SummaryPart) {
+    return [...dropList, summary.uId + '_children'];
   }
 
-  private getIdsRecursive(item: SummaryPart): string[] {
-    let ids = [item.uId];
-    item.children.forEach((childItem) => {
-      ids = ids.concat(this.getIdsRecursive(childItem));
-    });
-    return ids;
-  }
-
-  private canBeDropped(event: CdkDragDrop<SummaryPart, SummaryPart>): boolean {
-    const movingItem: SummaryPart = event.item.data;
-    return event.previousContainer.id !== event.container.id
-      && this.isNotSelfDrop(event)
-      && !this.hasChild(movingItem, event.container.data);
-  }
-
-
-  private isNotSelfDrop(event: CdkDragDrop<SummaryPart> | CdkDragEnter<SummaryPart> | CdkDragExit<SummaryPart>): boolean {
-    return event.container.data.uId !== event.item.data.uId;
-  }
-
-  private hasChild(parentItem: SummaryPart, childItem: SummaryPart): boolean {
-    const hasChild = parentItem.children.some((item) => item.uId === childItem.uId);
-    return hasChild ? true : parentItem.children.some((item) => this.hasChild(item, childItem));
-  }
 
 }
