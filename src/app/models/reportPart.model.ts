@@ -13,7 +13,12 @@ export interface EditableReportPart {
 
 export abstract class ReportPart {
   set children(children: ReportPart[]) {
+    this._children = [];
     this.addChildren(...children);
+  }
+
+  get children() {
+    return this._children;
   }
 
   component!: Type<ReportComponent>;
@@ -32,10 +37,6 @@ export abstract class ReportPart {
     this.uId = uuid.v4();
   }
 
-  getChildren(): ReportPart[] {
-    return this._children;
-  }
-
   addChildren(...children: ReportPart[]) {
     children.forEach((c) => {
       this._children.push(c);
@@ -43,8 +44,19 @@ export abstract class ReportPart {
     });
   }
 
+  static moveChildren(target: ReportPart, child: ReportPart) {
+    const previousParent = child.parent;
+    target.addChildren(child);
+    if (previousParent) {
+      console.log("previous children", [...previousParent.children]);
+      previousParent.children = previousParent.children.filter((c: ReportPart) => c.uId !== child.uId);
+      console.log("new children", [...previousParent.children]);
+    }
+  }
+
   deleteChild(child: ReportPart) {
     const idx = this._children.findIndex(c => c.uId === child.uId);
+    console.log("deleting child ", idx);
     if (idx >= 0) {
       this._children.splice(idx, 1);
     }

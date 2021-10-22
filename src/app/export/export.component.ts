@@ -4,7 +4,6 @@ import {
   ComponentFactoryResolver,
   Inject,
   Injector,
-  Input,
   OnInit, TemplateRef,
   ViewChild, ViewContainerRef
 } from '@angular/core';
@@ -12,13 +11,11 @@ import {ReportTag} from "../models/reportTag.model";
 import {TagService} from "../services/tag.service";
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {ExportModel} from "./model/export.model";
-import {PartHostDirective} from "../directives/part-host.directive";
-import {ReportComponent, ReportPart} from "../models/reportPart.model";
+import {ReportPart} from "../models/reportPart.model";
 import {ExporterSelection} from "./model/exporterSelection.model";
 import {ReportPartFactory} from "../models/reportPartFactory.model";
 import {SummaryPart} from "../report-summary/models/summaryPart.interface";
 import {DomPortal, DomPortalOutlet, PortalOutlet, TemplatePortal} from "@angular/cdk/portal";
-import {ReportParagraphComponent} from "../report-paragraph/report-paragraph.component";
 
 export interface ExportDialogData {
   reportPart: ReportPart
@@ -47,8 +44,7 @@ export class ExportComponent implements OnInit {
               private appRef: ApplicationRef,
               private viewContainerRef: ViewContainerRef,
               private componentFactoryResolver: ComponentFactoryResolver,
-              @Inject(MAT_DIALOG_DATA) public data: ExportDialogData,
-              public dialogRef: MatDialogRef<ExportComponent>) {
+              @Inject(MAT_DIALOG_DATA) public data: ExportDialogData) {
     tagService.subjectAllTags.subscribe(allTags => {
       this.allTags = allTags;
     });
@@ -59,9 +55,8 @@ export class ExportComponent implements OnInit {
   ngOnInit(): void {
   }
 
-
   export() {
-    const exportSelection = this.exporter.getExporterSelection(this.reportPart, this.taggedItem.reportPart.tags);
+    const exportSelection:ExporterSelection = this.exporter.getExporterSelection(this.reportPart, this.taggedItem.reportPart.tags);
     this.render(exportSelection);
   }
 
@@ -80,11 +75,9 @@ export class ExportComponent implements OnInit {
   }
 
   private _attachStyles(targetWindow: Window): void {
-    // Copy styles from parent window
     document.querySelectorAll("style").forEach(htmlElement => {
       targetWindow.document.head.appendChild(htmlElement.cloneNode(true));
     });
-    // Copy stylesheet link from parent window
     const styleSheetElement = this._getStyleSheetElement();
     targetWindow.document.head.appendChild(styleSheetElement);
   }

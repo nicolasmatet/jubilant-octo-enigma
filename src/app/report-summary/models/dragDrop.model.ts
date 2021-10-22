@@ -1,15 +1,17 @@
 import {CdkDragDrop, CdkDragEnter, CdkDragExit, moveItemInArray} from "@angular/cdk/drag-drop";
 import {SummaryPart} from "./summaryPart.interface";
+import {ReportPart} from "../../models/reportPart.model";
 
 export class DragDropModel {
 
   drop(event: CdkDragDrop<SummaryPart, any>) {
     console.log("dropped", event);
     if (this.canBeDropped(event)) {
+
       const movingItem: SummaryPart = event.item.data;
-      event.container.data.children.push(movingItem);
-      event.previousContainer.data.children = event.previousContainer.data.children
-        .filter((child: SummaryPart) => child.uId !== movingItem.uId);
+      const newParent = event.container.data;
+      SummaryPart.moveChildren(newParent, movingItem);
+      ReportPart.moveChildren(newParent.reportPart, movingItem.reportPart);
     } else {
       moveItemInArray(
         event.container.data.children,
@@ -27,7 +29,7 @@ export class DragDropModel {
     item.parentDropList = item.uId;
     item.childDropList = this.childId(item.parentDropList);
     item.connectedDropList = this.connectedDropLists(item, allParentDropLists);
-    console.log("item.connectedDropList", item.connectedDropList)
+    console.log("item.connectedDropList", item.connectedDropList);
     item.children.forEach(c => {
       this.assignDropListIds(c, allParentDropLists);
     });

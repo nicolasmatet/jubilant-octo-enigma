@@ -22,8 +22,16 @@ export class SummaryContextMenuService {
     const newMenu = new SummaryContextMenu();
     newMenu.menuItems = [
       {title: 'Edit', icon: 'edit_note', callback: (summaryPart: SummaryPart) => this.onClickEdit(summaryPart)},
-      {title: 'New Section', icon: 'create_new_folder', callback: (summaryPart: SummaryPart) => this.onClickNewSection(summaryPart)},
-      {title: 'New Paragraph', icon: 'post_add', callback: (summaryPart: SummaryPart) => this.onClickNewParagraph(summaryPart)},
+      {
+        title: 'New Section',
+        icon: 'create_new_folder',
+        callback: (summaryPart: SummaryPart) => this.onClickNewSection(summaryPart)
+      },
+      {
+        title: 'New Paragraph',
+        icon: 'post_add',
+        callback: (summaryPart: SummaryPart) => this.onClickNewParagraph(summaryPart)
+      },
       {title: 'Rename', icon: 'edit', callback: (summaryPart: SummaryPart) => this.onClickRename(summaryPart)},
       {title: 'Delete', icon: 'delete', callback: (summaryPart: SummaryPart) => this.onClickDelete(summaryPart)}
     ];
@@ -83,7 +91,7 @@ export class SummaryContextMenuService {
   }
 
   private addChild(target: SummaryPart, newPart: ReportPart) {
-    const container = target.reportPart.isContainer ? target : target.parent;
+    const container: SummaryPart | null = target.reportPart.isContainer ? target : target.parent;
     container?.reportPart.addChildren(newPart);
     container?.addChildren(newPart);
   }
