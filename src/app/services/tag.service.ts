@@ -21,7 +21,7 @@ export class TagService {
   private _subjectAllVars: BehaviorSubject<ReportTag[]> = new BehaviorSubject<ReportTag[]>([]);
 
   public subjectAllTags = this._subjectAllTags.asObservable();
-  public subjectAllVars = this._subjectAllTags.asObservable();
+  public subjectAllVars = this._subjectAllVars.asObservable();
 
   constructor() {
     this._subjectAllTags.next(

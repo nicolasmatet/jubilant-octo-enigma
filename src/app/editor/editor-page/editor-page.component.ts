@@ -22,13 +22,14 @@ export class EditorPageComponent implements OnInit {
 
   currentComponentRef: ComponentRef<ReportContentComponent> | null;
 
-  contentHandler = new EditorContentHandlerModel();
+  contentHandler !: EditorContentHandlerModel;
 
   constructor() {
     this.currentComponentRef = null;
   }
 
   ngOnInit(): void {
+    this.contentHandler = new EditorContentHandlerModel(this.reportPart.content);
     this.reportPart.content.forEach(content => {
       this.contentHandler.createComponent(this.editorHostRef, content.component, content.value);
     });
@@ -36,7 +37,6 @@ export class EditorPageComponent implements OnInit {
 
   save() {
     console.log('save');
-    // this.reportPart.content = this.editorRef.nativeElement.innerHTML;
   }
 
 

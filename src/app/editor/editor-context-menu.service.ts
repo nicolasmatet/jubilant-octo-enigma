@@ -32,10 +32,10 @@ export class EditorContextMenuService {
     if (editor.contentHandler.currentComponentRef === null) {
       return;
     }
-    const refs = editor.contentHandler.splitComponent(editor.host, editor.contentHandler.currentComponentRef);
-    const idx = editor.contentHandler.getIndex(editor.host, refs[0]);
-    editor.contentHandler.createComponent(editor.host, EditorVariableComponent, {tag: '', varName: ''}, idx+1);
-    console.log(editor);
+    editor.contentHandler.createVariable(
+      editor.host,
+      editor.contentHandler.currentComponentRef,
+      editor.contentHandler.content);
   }
 
 

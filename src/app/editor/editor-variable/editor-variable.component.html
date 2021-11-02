@@ -14,7 +14,7 @@
     <mat-form-field appearance="legacy">
       <mat-label>variable</mat-label>
       <mat-select [(value)]="value.varName">
-        <mat-option [value]="tag" *ngFor="let tag of allTags">{{ tag | tagTitlePipe }}</mat-option>
+        <mat-option [value]="tag" *ngFor="let tag of allVars">{{ tag | tagTitlePipe }}</mat-option>
       </mat-select>
     </mat-form-field>
 
