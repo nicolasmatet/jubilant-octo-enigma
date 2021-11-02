@@ -1,8 +1,11 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, ElementRef, OnInit} from '@angular/core';
 import {EditorService} from "./editor.service";
 import {FormControl} from "@angular/forms";
 import {ReportPart} from "../models/reportPart.model";
-import {ReportTag} from "../models/reportTag.model";
+import {ContextMenu} from "../context-menu/models/context-menu.model";
+import {EditorContextMenuService} from "./editor-context-menu.service";
+import {PartHostDirective} from "../directives/part-host.directive";
+import {EditorContextMenuData} from "./interfaces/editor-context-menu-data.interface";
 
 @Component({
   selector: 'app-editor',
@@ -14,8 +17,10 @@ export class EditorComponent implements OnInit {
   editing: ReportPart[] = [];
   selected = new FormControl(0);
 
-  constructor(private editorService: EditorService) {
+  contextMenu: ContextMenu<EditorContextMenuData>;
 
+  constructor(private editorService: EditorService, private editorContextMenuService: EditorContextMenuService) {
+    this.contextMenu = editorContextMenuService.getEditorContextMenu();
   }
 
   ngOnInit(): void {
@@ -34,6 +39,6 @@ export class EditorComponent implements OnInit {
   }
 
   closeTab(idx: number) {
-    this.editorService.closeTab(idx)
+    this.editorService.closeTab(idx);
   }
 }

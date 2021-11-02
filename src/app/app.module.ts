@@ -33,6 +33,9 @@ import { ExportComponent } from './export/export.component';
 import { ContextMenuComponent } from './context-menu/context-menu.component';
 import {PortalModule} from "@angular/cdk/portal";
 import {MatToolbarModule} from "@angular/material/toolbar";
+import { EditorVariableComponent } from './editor/editor-variable/editor-variable.component';
+import { EditorTextComponent } from './editor/editor-text/editor-text.component';
+import {MatSelectModule} from "@angular/material/select";
 
 @NgModule({
   declarations: [
@@ -49,7 +52,9 @@ import {MatToolbarModule} from "@angular/material/toolbar";
     TagTitlePipe,
     TagMenuComponent,
     ExportComponent,
-    ContextMenuComponent
+    ContextMenuComponent,
+    EditorVariableComponent,
+    EditorTextComponent
   ],
   imports: [
     CommonModule,
@@ -71,7 +76,8 @@ import {MatToolbarModule} from "@angular/material/toolbar";
     MatButtonModule,
     MatCheckboxModule,
     MatTooltipModule,
-    MatToolbarModule
+    MatToolbarModule,
+    MatSelectModule
   ],
   providers: [],
   bootstrap: [AppComponent]

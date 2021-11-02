@@ -26,3 +26,18 @@ export class StringTagModel extends ReportTag {
     return this.getTitle();
   }
 }
+
+export class StringVarModel extends ReportTag {
+  constructor(title: string) {
+    super(title);
+  }
+
+  getTitle(): string {
+    return this.data;
+  }
+
+  getId(): string {
+    return this.getTitle();
+  }
+}
+

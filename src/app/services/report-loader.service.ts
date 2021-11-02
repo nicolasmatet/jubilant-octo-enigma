@@ -3,6 +3,9 @@ import {Section} from "../models/section";
 import {Paragraph} from "../models/paragraph.model";
 import {ReportRoot} from "../models/reportPart.model";
 import {TagService} from "./tag.service";
+import {ReportPartContent} from "../models/reportPartContent";
+import {EditorVariableComponent} from "../editor/editor-variable/editor-variable.component";
+import {EditorTextComponent} from "../editor/editor-text/editor-text.component";
 
 @Injectable({
   providedIn: 'root'
@@ -12,6 +15,19 @@ export class ReportLoaderService {
   constructor(private tagService: TagService) {
   }
 
+  getParagraph(text: string): ReportPartContent {
+    return {
+      component: EditorTextComponent,
+      value: text
+    };
+  }
+
+  getVariable(tag: string, varName: string) {
+    return {
+      component: EditorVariableComponent,
+      value: {tag: tag, varName: varName}
+    };
+  }
 
   getReport(): ReportRoot {
     const root = new ReportRoot();
@@ -22,15 +38,19 @@ export class ReportLoaderService {
     const pB = new Paragraph('Paragraphe B');
     const pC = new Paragraph('Paragraphe C');
 
-    pIntro.content = 'Sed mollis hendrerit lorem, vel aliquet justo ullamcorper vel. Nulla facilisi. Pellentesque ac risus neque. ' +
-      'Donec ultrices justo vel purus egestas, nec luctus lorem auctor. Fusce et risus non nisi ornare fermentum. Sed ' +
-      'urna nulla, lacinia id mollis eu, dignissim eu metus. Pellentesque cursus dignissim nisi sit amet mollis. ' +
-      'Etiam a eleifend mi. Integer et lectus nec lacus finibus vehicula.';
-    pA.content = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et' +
+    pIntro.content = [
+      this.getParagraph('Sed mollis hendrerit lorem, vel aliquet justo ullamcorper vel. Nulla facilisi. Pellentesque ac risus neque. ' +
+        'Donec ultrices justo vel purus egestas'),
+      this.getVariable('France', 'PBT'),
+      this.getParagraph('nec luctus lorem auctor. Fusce et risus non nsi ornare fermentum. Sed ' +
+        'urna nulla, lacinia id mollis eu, dignissim eu metus. Pellentesque cursus dignissim nisi sit amet mollis. ' +
+        'Etiam a eleifend mi. Integer et lectus nec lacus finibus vehicula.')
+    ];
+    pA.content = [this.getParagraph('Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et' +
       ' dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea ' +
       'commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla ' +
-      'pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum';
-    pB.content = 'Vivamus ante leo, tristique in magna ac, egestas pellentesque dolor. Proin vitae magna a odio bibendum' +
+      'pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum')];
+    pB.content = [this.getParagraph('Vivamus ante leo, tristique in magna ac, egestas pellentesque dolor. Proin vitae magna a odio bibendum' +
       ' vehicula. Vestibulum semper luctus sem vel mollis. Duis quis tellus vel nunc interdum ultricies. Proin ' +
       'ullamcorper mauris vel nisi viverra venenatis. Quisque congue diam a accumsan pharetra. In id consequat nulla, ' +
       'vel euismod nisl. Nullam tempus sem eu mi semper, et dignissim eros posuere. Sed ut gravida leo, ut egestas eros.' +
@@ -42,14 +62,14 @@ export class ReportLoaderService {
       'a magna eget eros convallis varius non a elit. Proin ac imperdiet diam. Proin sit amet felis a leo interdum ' +
       'convallis. Quisque vel elit quis quam consequat eleifend. Nam molestie pharetra sem eget ultrices. Integer ' +
       'eleifend odio quis orci fermentum feugiat. Pellentesque habitant morbi tristique senectus et netus et malesuada ' +
-      'fames ac turpis egestas.';
-    pC.content = 'Vivamus non mauris sed tellus sodales tincidunt quis et ligula. Quisque sed tortor dolor. In posuere ' +
+      'fames ac turpis egestas.')];
+    pC.content = [this.getParagraph('Vivamus non mauris sed tellus sodales tincidunt quis et ligula. Quisque sed tortor dolor. In posuere ' +
       'viverra aliquet. Maecenas sit amet placerat massa. Nunc vehicula sapien a nisi tempus, a ultricies urna suscipit.' +
-      ' Quisque lobortis sapien vehicula, vehicula lacus sed, venenatis leo. Mauris ultrices nisi eu venenatis lobortis.' +
+      ' Quisque lobortis sapien vehicula, vehicula lacus sed venenatis leo. Mauris ultrices nisi eu venenatis lobortis.' +
       ' Sed mollis hendrerit lorem, vel aliquet justo ullamcorper vel. Nulla facilisi. Pellentesque ac risus neque. ' +
       'Donec ultrices justo vel purus egestas, nec luctus lorem auctor. Fusce et risus non nisi ornare fermentum. Sed ' +
       'urna nulla, lacinia id mollis eu, dignissim eu metus. Pellentesque cursus dignissim nisi sit amet mollis. ' +
-      'Etiam a eleifend mi. Integer et lectus nec lacus finibus vehicula.';
+      'Etiam a eleifend mi. Integer et lectus nec lacus finibus vehicula.')];
 
     const allTags = this.tagService.getAllTags();
     section1.tags = [allTags[0]];

@@ -32,7 +32,7 @@
          [id]="summaryPart.uId"
          [cdkDragData]="summaryPart"
          *ngFor="let summaryPart of summary.children"
-         (contextmenu)="contextMenu.onContextMenu($event, summaryPart)">
+         (contextmenu)="contextMenu.showMenu($event, summaryPart)">
       <ng-container [ngTemplateOutlet]=
                       "summaryPart.children.length? (summaryPart.expended? partExpended:partClosed) :partNoChildren"
                     [ngTemplateOutletContext]="{summary: summaryPart, dropLists:dropLists}"></ng-container>

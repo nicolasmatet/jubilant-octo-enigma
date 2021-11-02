@@ -4,9 +4,9 @@
      [matMenuTriggerFor]="contextMenuTemplate">
 </div>
 <mat-menu #contextMenuTemplate="matMenu">
-  <ng-template matMenuContent let-summaryPart="summaryPart">
+  <ng-template matMenuContent let-menudata="menudata">
     <button *ngFor="let menuItem of contextMenu.menuItems"
-            mat-menu-item (click)="menuItem.callback(summaryPart)">
+            mat-menu-item (click)="menuItem.callback(menudata)">
       {{menuItem.title}}
       <mat-icon>{{menuItem.icon}}</mat-icon>
     </button>

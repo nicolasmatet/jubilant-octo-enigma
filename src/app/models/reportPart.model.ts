@@ -2,14 +2,12 @@ import {ReportTag} from "./reportTag.model";
 import {Type} from "@angular/core";
 import * as uuid from 'uuid';
 import {ExporterSelection} from "../export/model/exporterSelection.model";
+import {ReportPartContent} from "./reportPartContent";
 
 export interface ReportComponent {
   selection: ExporterSelection;
 }
 
-export interface EditableReportPart {
-  content: string;
-}
 
 export abstract class ReportPart {
   set children(children: ReportPart[]) {
@@ -23,7 +21,7 @@ export abstract class ReportPart {
 
   component!: Type<ReportComponent>;
   icon: string = '';
-  content: string = '';
+  content: ReportPartContent[] = [];
 
   tags: ReportTag[] = [];
   uId: string = uuid.v4();

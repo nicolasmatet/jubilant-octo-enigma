@@ -1,5 +1,5 @@
-export interface ContextMenuItem {
+export interface ContextMenuItem<T> {
   title: string;
   icon: string;
-  callback: (...args: any[]) => void
+  callback: (menuData: T) => void
 }

@@ -1,0 +1,21 @@
+<!--<app-tag-menu [taggedItems]="[taggedItem]"></app-tag-menu>-->
+<span class="example-insert" [contentEditable]="false">
+    <mat-icon class="var-icon">label</mat-icon>
+
+    <mat-form-field appearance="legacy">
+      <mat-label>tag</mat-label>
+      <mat-select [(value)]="value.tag">
+        <mat-option [value]="tag" *ngFor="let tag of allTags">{{ tag | tagTitlePipe }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-icon class="var-icon">calculate</mat-icon>
+
+    <mat-form-field appearance="legacy">
+      <mat-label>variable</mat-label>
+      <mat-select [(value)]="value.varName">
+        <mat-option [value]="tag" *ngFor="let tag of allTags">{{ tag | tagTitlePipe }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+</span>

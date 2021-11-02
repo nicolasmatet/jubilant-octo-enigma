@@ -1,4 +1,7 @@
-<label for="content" [style.display]="'none'"></label>
-<textarea class="editor-area" id="content" name="content"
-          rows="50" cols="33" [(ngModel)]='reportPart.content'>
-</textarea>
+<app-context-menu [contextMenu]="contextMenu"></app-context-menu>
+
+<div #editor
+     (contextmenu)="contextMenu.showMenu($event, {host: editorHostRef, contentHandler:contentHandler})">
+  <ng-container appPartHost>
+  </ng-container>
+</div>

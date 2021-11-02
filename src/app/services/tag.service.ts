@@ -1,6 +1,6 @@
 import {Injectable, Pipe, PipeTransform} from '@angular/core';
 import {BehaviorSubject, Subject} from "rxjs";
-import {ReportTag, StringTagModel} from "../models/reportTag.model";
+import {ReportTag, StringTagModel, StringVarModel} from "../models/reportTag.model";
 
 @Pipe({
   name: 'tagTitlePipe'
@@ -18,7 +18,10 @@ export class TagTitlePipe implements PipeTransform {
 export class TagService {
 
   private _subjectAllTags: BehaviorSubject<ReportTag[]> = new BehaviorSubject<ReportTag[]>([]);
+  private _subjectAllVars: BehaviorSubject<ReportTag[]> = new BehaviorSubject<ReportTag[]>([]);
+
   public subjectAllTags = this._subjectAllTags.asObservable();
+  public subjectAllVars = this._subjectAllTags.asObservable();
 
   constructor() {
     this._subjectAllTags.next(
@@ -37,9 +40,27 @@ export class TagService {
         new StringTagModel('suede')
       ]
     );
+
+    this._subjectAllVars.next(
+      [
+        new StringVarModel('Revenue Related Parties'),
+        new StringVarModel('Revenue Unrelated Parties'),
+        new StringVarModel('Revenue Total'),
+        new StringVarModel('Profit Before Tax'),
+        new StringVarModel('Income Tax Due'),
+        new StringVarModel('Income Tax Accrued'),
+        new StringVarModel('Tangible Assets'),
+        new StringVarModel('Accumulated earnings'),
+        new StringVarModel('Number of Employees'),
+      ]
+    );
   }
 
   getAllTags(): ReportTag[] {
     return this._subjectAllTags.getValue();
+  }
+
+  getAllVars(): ReportTag[] {
+    return this._subjectAllVars.getValue()
   }
 }

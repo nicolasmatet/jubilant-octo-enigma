@@ -1,15 +1,8 @@
 import {AfterViewInit, Component, Input, OnInit, ViewChild} from '@angular/core';
 import {ReportPart} from "../models/reportPart.model";
 import {SummaryPart} from "./models/summaryPart.interface";
-import {CdkDragDrop, CdkDragEnter, CdkDragExit, moveItemInArray} from "@angular/cdk/drag-drop";
-import {MatMenuTrigger} from "@angular/material/menu";
-import {SummaryContextMenuService} from "./services/summary-context-menu.service";
 import {ContextMenu} from "../context-menu/models/context-menu.model";
-import {MultipleSelectionModel} from "./models/multipleSelection.model";
 import {SelectionModel} from "../models/selection.model";
-import {ExportComponent} from "../export/export.component";
-import {ExportModel} from "../export/model/export.model";
-import {MatDialog} from "@angular/material/dialog";
 import {DragDropModel} from "./models/dragDrop.model";
 
 @Component({
@@ -17,7 +10,7 @@ import {DragDropModel} from "./models/dragDrop.model";
   templateUrl: './report-summary.component.html',
   styleUrls: ['./report-summary.component.scss']
 })
-export class ReportSummaryComponent implements OnInit {
+export class ReportSummaryComponent implements OnInit, AfterViewInit {
   @Input() report!: ReportPart;
   @Input() contextMenu!: ContextMenu<SummaryPart>;
   @Input() selectionModel!: SelectionModel<SummaryPart>;
@@ -37,6 +30,12 @@ export class ReportSummaryComponent implements OnInit {
     this.dragDropModel.assignDropListIds(this.summary, this.allDropListsParentIds);
     console.log("this.summary", this.summary);
   }
+
+
+  ngAfterViewInit(): void {
+    this.contextMenu.menuItems[0].callback(this.summary.children[0]);
+  }
+
 
   toogleExpended(summaryPart: SummaryPart) {
     summaryPart.expended = !summaryPart.expended;
