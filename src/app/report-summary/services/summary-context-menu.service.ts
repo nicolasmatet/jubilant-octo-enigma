@@ -5,7 +5,7 @@ import {NewFileDialogData, ShortTextDialogComponent} from "../../short-text-dial
 import {MatDialogRef} from "@angular/material/dialog/dialog-ref";
 import {ReportPart} from "../../models/reportPart.model";
 import {MatDialog} from "@angular/material/dialog";
-import {EditorService} from "../../editor/editor.service";
+import {EditorService} from "../../editor/services/editor.service";
 import {SummaryContextMenu} from "../models/summary-context-menu.model";
 import {ContextMenu} from "../../context-menu/models/context-menu.model";
 

@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {ReportPart} from "../models/reportPart.model";
+import {ReportPart} from "../../models/reportPart.model";
 import {Subject} from "rxjs";
 
 @Injectable({

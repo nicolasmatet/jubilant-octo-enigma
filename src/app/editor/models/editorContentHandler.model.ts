@@ -29,6 +29,13 @@ export class EditorContentHandlerModel {
     return componentRef;
   }
 
+  deleteComponent(host: PartHostDirective, componentRef: ComponentRef<ReportContentEditorComponent>, content: ReportPartContent<any>[]) {
+    const idx = this.getIndex(host, componentRef);
+    host.delete(idx);
+    content.splice(idx, 1);
+
+  }
+
   getIndex(host: PartHostDirective, componentRef: ComponentRef<ReportContentEditorComponent>) {
     return host.viewContainerRef.indexOf(componentRef.hostView);
   }
@@ -63,8 +70,14 @@ export class EditorContentHandlerModel {
     const editor = EditorVariableComponent;
     const renderer = VariableRendererComponent;
     const value: EditorVariableInterface = {tag: null, varName: null};
-    this.createComponent(host, editor, value, idx + 1);
+    componentRef = this.createComponent(host, editor, value, idx + 1);
     content.splice(idx + 1, 0, {editor: editor, renderer: renderer, value: value});
+    componentRef.instance.deleted = new Subject<boolean>();
+    componentRef.instance.deleted.subscribe(deleted => {
+      if (deleted) {
+        this.deleteComponent(host, componentRef, content);
+      }
+    });
   }
 
 }

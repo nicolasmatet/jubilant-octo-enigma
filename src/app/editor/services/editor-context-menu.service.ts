@@ -1,8 +1,8 @@
 import { ComponentRef,  Injectable} from '@angular/core';
-import {ContextMenu} from "../context-menu/models/context-menu.model";
-import {EditorContextMenu} from "./models/editorContextMenu";
-import {EditorContextMenuData} from "./interfaces/editor-context-menu-data.interface";
-import {ReportContentEditorComponent} from "../models/reportPartContent";
+import {ContextMenu} from "../../context-menu/models/context-menu.model";
+import {EditorContextMenu} from "../models/editorContextMenu";
+import {EditorContextMenuData} from "../interfaces/editor-context-menu-data.interface";
+import {ReportContentEditorComponent} from "../../models/reportPartContent";
 
 @Injectable({
   providedIn: 'root'

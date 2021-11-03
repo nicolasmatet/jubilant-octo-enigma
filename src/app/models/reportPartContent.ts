@@ -17,6 +17,7 @@ export interface ReportContentValueGetter<T> {
 export interface ReportContentEditorComponent {
   value: any;
   selected: Subject<boolean>;
+  deleted?: Subject<boolean>;
   caret: number[];
 }
 

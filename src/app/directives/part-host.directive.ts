@@ -15,4 +15,8 @@ export class PartHostDirective {
     const factory = this.componentFactoryResolver.resolveComponentFactory(component);
     return this.viewContainerRef.createComponent(factory, index);
   }
+
+  public delete(index: number): void {
+    return this.viewContainerRef.remove(index);
+  }
 }

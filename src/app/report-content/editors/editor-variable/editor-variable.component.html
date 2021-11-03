@@ -5,6 +5,7 @@
     <mat-form-field appearance="legacy">
       <mat-label>tag</mat-label>
       <mat-select [(value)]="value.tag">
+        <mat-option [value]="null">-- auto --</mat-option>
         <mat-option [value]="tag" *ngFor="let tag of allTags">{{ tag | tagTitlePipe }}</mat-option>
       </mat-select>
     </mat-form-field>
@@ -18,4 +19,5 @@
       </mat-select>
     </mat-form-field>
 
+  <button mat-icon-button (click)="delete()"><mat-icon>delete</mat-icon></button>
 </span>

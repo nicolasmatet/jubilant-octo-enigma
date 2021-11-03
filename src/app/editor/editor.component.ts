@@ -1,9 +1,9 @@
 import {Component, ElementRef, OnInit} from '@angular/core';
-import {EditorService} from "./editor.service";
+import {EditorService} from "./services/editor.service";
 import {FormControl} from "@angular/forms";
 import {ReportPart} from "../models/reportPart.model";
 import {ContextMenu} from "../context-menu/models/context-menu.model";
-import {EditorContextMenuService} from "./editor-context-menu.service";
+import {EditorContextMenuService} from "./services/editor-context-menu.service";
 import {PartHostDirective} from "../directives/part-host.directive";
 import {EditorContextMenuData} from "./interfaces/editor-context-menu-data.interface";
 

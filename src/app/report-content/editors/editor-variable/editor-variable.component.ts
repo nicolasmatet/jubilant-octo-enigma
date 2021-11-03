@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnInit, Output} from '@angular/core';
 import {SummaryPart} from "../../../report-summary/models/summaryPart.interface";
 import {ReportPartFactory} from "../../../models/reportPartFactory.model";
 import {ReportContentEditorComponent} from "../../../models/reportPartContent";
@@ -15,6 +15,7 @@ import {EditorVariableInterface} from "../../../editor/interfaces/editorVariable
 export class EditorVariableComponent implements OnInit, ReportContentEditorComponent {
   @Input() value!: EditorVariableInterface;
   selected!: Subject<boolean>;
+  deleted!: Subject<boolean>;
   caret = [0, 0];
   allTags: ReportTag[] = [];
   allVars: ReportTag[] = [];
@@ -26,6 +27,10 @@ export class EditorVariableComponent implements OnInit, ReportContentEditorCompo
   }
 
   ngOnInit(): void {
+  }
+
+  delete() {
+    this.deleted.next(true);
   }
 
 
