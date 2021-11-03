@@ -1,11 +1,13 @@
 import {ReportTag} from "./reportTag.model";
-import {Type} from "@angular/core";
+import {Input, Type} from "@angular/core";
 import * as uuid from 'uuid';
 import {ExporterSelection} from "../export/model/exporterSelection.model";
 import {ReportPartContent} from "./reportPartContent";
+import {DataframeModel} from "./dataframe.model";
 
 export interface ReportComponent {
   selection: ExporterSelection;
+  finData: DataframeModel;
 }
 
 
@@ -21,7 +23,7 @@ export abstract class ReportPart {
 
   component!: Type<ReportComponent>;
   icon: string = '';
-  content: ReportPartContent[] = [];
+  content: ReportPartContent<any>[] = [];
 
   tags: ReportTag[] = [];
   uId: string = uuid.v4();

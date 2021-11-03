@@ -5,12 +5,12 @@ import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
 import {ReportSummaryComponent} from './report-summary/report-summary.component';
 import {DtpMainComponent} from './dtp-main/dtp-main.component';
-import {ReportSectionComponent} from './report-section/report-section.component';
-import {ReportParagraphComponent} from './report-paragraph/report-paragraph.component';
+import {ReportSectionComponent} from './render/report-section/report-section.component';
+import {ReportParagraphComponent} from './render/report-paragraph/report-paragraph.component';
 import {PartHostDirective} from './directives/part-host.directive';
 import {FlexModule} from "@angular/flex-layout";
 import {CommonModule} from "@angular/common";
-import {ReportMainComponent} from "./report-main/report-main.component";
+import {ReportMainComponent} from "./render/report-main/report-main.component";
 import {MatIconModule} from '@angular/material/icon';
 import {DragDropModule} from "@angular/cdk/drag-drop";
 import {MatMenuModule} from "@angular/material/menu";
@@ -33,9 +33,11 @@ import { ExportComponent } from './export/export.component';
 import { ContextMenuComponent } from './context-menu/context-menu.component';
 import {PortalModule} from "@angular/cdk/portal";
 import {MatToolbarModule} from "@angular/material/toolbar";
-import { EditorVariableComponent } from './editor/editor-variable/editor-variable.component';
-import { EditorTextComponent } from './editor/editor-text/editor-text.component';
 import {MatSelectModule} from "@angular/material/select";
+import { TextRendrerComponent } from './report-content/renderers/text-rendrer/text-rendrer.component';
+import { VariableRendererComponent } from './report-content/renderers/variable-renderer/variable-renderer.component';
+import {EditorVariableComponent} from "./report-content/editors/editor-variable/editor-variable.component";
+import {EditorTextComponent} from "./report-content/editors/editor-text/editor-text.component";
 
 @NgModule({
   declarations: [
@@ -54,7 +56,9 @@ import {MatSelectModule} from "@angular/material/select";
     ExportComponent,
     ContextMenuComponent,
     EditorVariableComponent,
-    EditorTextComponent
+    EditorTextComponent,
+    TextRendrerComponent,
+    VariableRendererComponent
   ],
   imports: [
     CommonModule,

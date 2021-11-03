@@ -1,7 +1,8 @@
 import {Component, ComponentFactoryResolver, OnInit, ViewChild} from '@angular/core';
-import {ReportComponent, ReportPart} from "../models/reportPart.model";
-import {PartHostDirective} from "../directives/part-host.directive";
-import {ExporterSelection} from "../export/model/exporterSelection.model";
+import {ReportComponent, ReportPart} from "../../models/reportPart.model";
+import {PartHostDirective} from "../../directives/part-host.directive";
+import {ExporterSelection} from "../../export/model/exporterSelection.model";
+import {DataframeModel} from "../../models/dataframe.model";
 
 @Component({
   selector: 'app-report-section',
@@ -10,6 +11,8 @@ import {ExporterSelection} from "../export/model/exporterSelection.model";
 })
 export class ReportSectionComponent implements OnInit, ReportComponent {
   selection!: ExporterSelection;
+  finData!: DataframeModel;
+
   @ViewChild(PartHostDirective, {static: true}) contentHost!: PartHostDirective;
 
   constructor(private componentFactoryResolver: ComponentFactoryResolver) {
@@ -26,6 +29,7 @@ export class ReportSectionComponent implements OnInit, ReportComponent {
     const componentFactory = this.componentFactoryResolver.resolveComponentFactory(selection.reportPart.component);
     const componentRef = this.contentHost.viewContainerRef.createComponent<ReportComponent>(componentFactory);
     componentRef.instance.selection = selection;
+    componentRef.instance.finData = this.finData;
   }
 
 

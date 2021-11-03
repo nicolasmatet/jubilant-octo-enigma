@@ -16,6 +16,8 @@ import {ExporterSelection} from "./model/exporterSelection.model";
 import {ReportPartFactory} from "../models/reportPartFactory.model";
 import {SummaryPart} from "../report-summary/models/summaryPart.interface";
 import {DomPortal, DomPortalOutlet, PortalOutlet, TemplatePortal} from "@angular/cdk/portal";
+import {DataframeModel} from "../models/dataframe.model";
+import {FinDataService} from "../services/fin-data.service";
 
 export interface ExportDialogData {
   reportPart: ReportPart
@@ -36,10 +38,13 @@ export class ExportComponent implements OnInit {
   @ViewChild("iframe") iframe: any;
   @ViewChild('rootHost') templatePortalContent!: TemplateRef<unknown>;
   taggedItem = new SummaryPart(new ReportPartFactory().getNewParagraph(''), {});
+  dataFile: string = '';
+  allDataFiles: string[];
 
   // private portalHost!: PortalOutlet;
 
   constructor(private tagService: TagService,
+              private finDataService: FinDataService,
               private injector: Injector,
               private appRef: ApplicationRef,
               private viewContainerRef: ViewContainerRef,
@@ -48,6 +53,8 @@ export class ExportComponent implements OnInit {
     tagService.subjectAllTags.subscribe(allTags => {
       this.allTags = allTags;
     });
+    this.allDataFiles = this.finDataService.getDataFiles();
+    this.dataFile = this.allDataFiles[0];
     this.reportPart = data.reportPart;
     this.exporter = data.exporter;
   }
@@ -56,15 +63,21 @@ export class ExportComponent implements OnInit {
   }
 
   export() {
-    const exportSelection:ExporterSelection = this.exporter.getExporterSelection(this.reportPart, this.taggedItem.reportPart.tags);
-    this.render(exportSelection);
+    const exportSelection: ExporterSelection = this.exporter.getExporterSelection(this.reportPart, this.taggedItem.reportPart.tags);
+    const dataSource = this.getDataSource(this.dataFile);
+    this.render(exportSelection, dataSource);
   }
 
-  render(exporterSelection: ExporterSelection) {
+  getDataSource(dataFile: string) {
+    return this.finDataService.getData(dataFile);
+  }
+
+  render(exporterSelection: ExporterSelection, finData: DataframeModel) {
     console.log("exporterSelection", exporterSelection);
     const portalHost = this.getPortalHost();
     const portal = new TemplatePortal(this.templatePortalContent, this.viewContainerRef, {
-      exporterSelection: exporterSelection
+      exporterSelection: exporterSelection,
+      finData: finData
     });
     this._attachStyles(this.iframe.nativeElement.contentWindow);
     portalHost.attach(portal);

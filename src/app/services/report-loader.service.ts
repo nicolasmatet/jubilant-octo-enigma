@@ -4,8 +4,14 @@ import {Paragraph} from "../models/paragraph.model";
 import {ReportRoot} from "../models/reportPart.model";
 import {TagService} from "./tag.service";
 import {ReportPartContent} from "../models/reportPartContent";
-import {EditorVariableComponent} from "../editor/editor-variable/editor-variable.component";
-import {EditorTextComponent} from "../editor/editor-text/editor-text.component";
+import {TextRendrerComponent} from "../report-content/renderers/text-rendrer/text-rendrer.component";
+import {VariableRendererComponent} from "../report-content/renderers/variable-renderer/variable-renderer.component";
+import {VariableValueGetterModel} from "../report-content/variableValueGetter.model";
+import {EditorTextComponent} from "../report-content/editors/editor-text/editor-text.component";
+import {EditorVariableComponent} from "../report-content/editors/editor-variable/editor-variable.component";
+import {ReportTag} from "../models/reportTag.model";
+import {EditorVariableInterface} from "../editor/interfaces/editorVariable.interface";
+
 
 @Injectable({
   providedIn: 'root'
@@ -15,21 +21,27 @@ export class ReportLoaderService {
   constructor(private tagService: TagService) {
   }
 
-  getParagraph(text: string): ReportPartContent {
+  getParagraph(text: string): ReportPartContent<string> {
     return {
-      component: EditorTextComponent,
+      editor: EditorTextComponent,
+      renderer: TextRendrerComponent,
       value: text
     };
   }
 
-  getVariable(tag: string, varName: string) {
+  getVariable(tag: ReportTag | null, varName: ReportTag | null): ReportPartContent<EditorVariableInterface> {
     return {
-      component: EditorVariableComponent,
+      editor: EditorVariableComponent,
+      renderer: VariableRendererComponent,
+      valueGetter: new VariableValueGetterModel(),
       value: {tag: tag, varName: varName}
     };
   }
 
   getReport(): ReportRoot {
+    const allTags = this.tagService.getAllTags();
+    const allVars = this.tagService.getAllVars();
+
     const root = new ReportRoot();
     const pIntro = new Paragraph('Paragraphe Intro');
     const section1 = new Section('Section 1');
@@ -41,7 +53,7 @@ export class ReportLoaderService {
     pIntro.content = [
       this.getParagraph('Sed mollis hendrerit lorem, vel aliquet justo ullamcorper vel. Nulla facilisi. Pellentesque ac risus neque. ' +
         'Donec ultrices justo vel purus egestas'),
-      this.getVariable('France', 'PBT'),
+      this.getVariable(null, allVars[0]),
       this.getParagraph('nec luctus lorem auctor. Fusce et risus non nsi ornare fermentum. Sed ' +
         'urna nulla, lacinia id mollis eu, dignissim eu metus. Pellentesque cursus dignissim nisi sit amet mollis. ' +
         'Etiam a eleifend mi. Integer et lectus nec lacus finibus vehicula.')
@@ -71,7 +83,6 @@ export class ReportLoaderService {
       'urna nulla, lacinia id mollis eu, dignissim eu metus. Pellentesque cursus dignissim nisi sit amet mollis. ' +
       'Etiam a eleifend mi. Integer et lectus nec lacus finibus vehicula.')];
 
-    const allTags = this.tagService.getAllTags();
     section1.tags = [allTags[0]];
     pC.tags = [allTags[0], allTags[1]];
     subSection.addChildren(pB, pC);

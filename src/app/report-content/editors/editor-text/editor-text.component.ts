@@ -1,13 +1,13 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {Subject} from "rxjs";
-import {ReportContentComponent} from "../../models/reportPartContent";
+import {ReportContentEditorComponent} from "../../../models/reportPartContent";
 
 @Component({
   selector: 'app-editor-text',
   templateUrl: './editor-text.component.html',
   styleUrls: ['./editor-text.component.scss']
 })
-export class EditorTextComponent implements OnInit, ReportContentComponent {
+export class EditorTextComponent implements OnInit, ReportContentEditorComponent {
 
   @Input() value!: any;
   selected!: Subject<boolean>;

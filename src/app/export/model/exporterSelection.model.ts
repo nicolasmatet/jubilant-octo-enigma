@@ -1,8 +1,10 @@
 import {ReportPart} from "../../models/reportPart.model";
+import {ReportTag} from "../../models/reportTag.model";
 
 export class ExporterSelection {
   selected = false;
   exported = false;
+  tag: ReportTag | null = null; // tag that explain why this part is exported;
   reportPart: ReportPart;
   parent: ExporterSelection | null = null;
   children: ExporterSelection[] = [];

@@ -3,9 +3,7 @@ import {ReportPart} from "../../models/reportPart.model";
 import {ContextMenu} from "../../context-menu/models/context-menu.model";
 import {PartHostDirective} from "../../directives/part-host.directive";
 import {EditorContextMenuData} from "../interfaces/editor-context-menu-data.interface";
-import {ReportContentComponent, ReportPartContent} from "../../models/reportPartContent";
-import {Subject} from "rxjs";
-import {EditorContextMenuService} from "../editor-context-menu.service";
+import {ReportContentEditorComponent, ReportPartContent} from "../../models/reportPartContent";
 import {EditorContentHandlerModel} from "../models/editorContentHandler.model";
 
 @Component({
@@ -20,7 +18,7 @@ export class EditorPageComponent implements OnInit {
   @ViewChild('editor') editorRef !: ElementRef;
   @ViewChild(PartHostDirective, {static: true}) editorHostRef !: PartHostDirective;
 
-  currentComponentRef: ComponentRef<ReportContentComponent> | null;
+  currentComponentRef: ComponentRef<ReportContentEditorComponent> | null;
 
   contentHandler !: EditorContentHandlerModel;
 
@@ -31,7 +29,7 @@ export class EditorPageComponent implements OnInit {
   ngOnInit(): void {
     this.contentHandler = new EditorContentHandlerModel(this.reportPart.content);
     this.reportPart.content.forEach(content => {
-      this.contentHandler.createComponent(this.editorHostRef, content.component, content.value);
+      this.contentHandler.createComponent(this.editorHostRef, content.editor, content.value);
     });
   }
 

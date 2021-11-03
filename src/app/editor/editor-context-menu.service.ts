@@ -1,19 +1,14 @@
-import {ComponentFactoryResolver, ComponentRef, ElementRef, Injectable, Renderer2, Type} from '@angular/core';
+import { ComponentRef,  Injectable} from '@angular/core';
 import {ContextMenu} from "../context-menu/models/context-menu.model";
-import {SummaryPart} from "../report-summary/models/summaryPart.interface";
 import {EditorContextMenu} from "./models/editorContextMenu";
-import {ReportComponent} from "../models/reportPart.model";
-import {EditorVariableComponent} from "./editor-variable/editor-variable.component";
-import {PartHostDirective} from "../directives/part-host.directive";
 import {EditorContextMenuData} from "./interfaces/editor-context-menu-data.interface";
-import {ReportContentComponent} from "../models/reportPartContent";
-import {Subject} from "rxjs";
+import {ReportContentEditorComponent} from "../models/reportPartContent";
 
 @Injectable({
   providedIn: 'root'
 })
 export class EditorContextMenuService {
-  currentComponentRef: ComponentRef<ReportContentComponent> | null = null;
+  currentComponentRef: ComponentRef<ReportContentEditorComponent> | null = null;
 
   getEditorContextMenu(): ContextMenu<EditorContextMenuData> {
     const newMenu = new EditorContextMenu();

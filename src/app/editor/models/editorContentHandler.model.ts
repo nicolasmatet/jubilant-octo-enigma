@@ -1,20 +1,22 @@
 import {PartHostDirective} from "../../directives/part-host.directive";
 import {ComponentRef, Type} from "@angular/core";
-import {ReportContentComponent, ReportPartContent} from "../../models/reportPartContent";
+import {ReportContentEditorComponent, ReportPartContent} from "../../models/reportPartContent";
 import {Subject} from "rxjs";
-import {EditorVariableComponent} from "../editor-variable/editor-variable.component";
+import {VariableRendererComponent} from "../../report-content/renderers/variable-renderer/variable-renderer.component";
+import {EditorVariableComponent} from "../../report-content/editors/editor-variable/editor-variable.component";
+import {EditorVariableInterface} from "../interfaces/editorVariable.interface";
 
 export class EditorContentHandlerModel {
-  currentComponentRef: ComponentRef<ReportContentComponent> | null = null;
-  content: ReportPartContent[];
+  currentComponentRef: ComponentRef<ReportContentEditorComponent> | null = null;
+  content: ReportPartContent<any>[];
 
-  constructor(content: ReportPartContent[]) {
+  constructor(content: ReportPartContent<any>[]) {
     this.content = content;
   }
 
   createComponent(host: PartHostDirective,
-                  componentType: Type<ReportContentComponent>,
-                  value: any, index?: number): ComponentRef<ReportContentComponent> {
+                  componentType: Type<ReportContentEditorComponent>,
+                  value: any, index?: number): ComponentRef<ReportContentEditorComponent> {
     const componentRef = host.createComponent(componentType, index);
     componentRef.instance.value = value;
     componentRef.instance.selected = new Subject<boolean>();
@@ -27,13 +29,13 @@ export class EditorContentHandlerModel {
     return componentRef;
   }
 
-  getIndex(host: PartHostDirective, componentRef: ComponentRef<ReportContentComponent>) {
+  getIndex(host: PartHostDirective, componentRef: ComponentRef<ReportContentEditorComponent>) {
     return host.viewContainerRef.indexOf(componentRef.hostView);
   }
 
   splitComponent(host: PartHostDirective,
-                 componentRef: ComponentRef<ReportContentComponent>,
-                 content: ReportPartContent[]): ComponentRef<ReportContentComponent>[] {
+                 componentRef: ComponentRef<ReportContentEditorComponent>,
+                 content: ReportPartContent<string>[]): ComponentRef<ReportContentEditorComponent>[] {
     const idx = this.getIndex(host, componentRef);
     console.log("splitComponent idx", idx);
     const value = componentRef.instance.value;
@@ -48,18 +50,21 @@ export class EditorContentHandlerModel {
 
     const ref1 = this.createComponent(host, componentRef.componentType, valueBefore, idx);
     const ref2 = this.createComponent(host, componentRef.componentType, valueAfter, idx + 1);
+    const previousContent = content[idx];
     content.splice(idx, 2,
-      {component: componentRef.componentType, value: valueBefore},
-      {component: componentRef.componentType, value: valueAfter});
+      {editor: previousContent.editor, renderer: previousContent.renderer, value: valueBefore},
+      {editor: previousContent.editor, renderer: previousContent.renderer, value: valueAfter});
     return [ref1, ref2];
   }
 
-  createVariable(host: PartHostDirective, componentRef: ComponentRef<ReportContentComponent>, content: ReportPartContent[]) {
+  createVariable(host: PartHostDirective, componentRef: ComponentRef<ReportContentEditorComponent>, content: ReportPartContent<any>[]) {
     const refs = this.splitComponent(host, componentRef, content);
     const idx = this.getIndex(host, refs[0]);
-    const comp = EditorVariableComponent;
-    const value = {tag: '', varName: ''};
-    this.createComponent(host, comp, value, idx + 1);
-    content.splice(idx + 1, 0, {component: comp, value: value});
+    const editor = EditorVariableComponent;
+    const renderer = VariableRendererComponent;
+    const value: EditorVariableInterface = {tag: null, varName: null};
+    this.createComponent(host, editor, value, idx + 1);
+    content.splice(idx + 1, 0, {editor: editor, renderer: renderer, value: value});
   }
+
 }

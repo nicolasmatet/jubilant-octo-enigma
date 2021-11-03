@@ -4,7 +4,15 @@
     <span class="tag" *ngFor="let tag of taggedItem.reportPart.tags"> {{tag | tagTitlePipe}}</span>
   </div>
 
-  <button mat-raised-button (click)="export()" [style.align]="'rtl'">Export</button>
+  <mat-form-field appearance="fill">
+    <mat-label>data source</mat-label>
+    <mat-select [(value)]="dataFile">
+      <mat-option [value]="fileName" *ngFor="let fileName of allDataFiles">{{ fileName }}</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+
+  <button mat-raised-button [disabled]="!dataFile" (click)="export()" [style.align]="'rtl'">Export</button>
 </div>
 
 
@@ -13,8 +21,8 @@
 <!--<ng-template #templatePortalContent>-->
 <!--  <div [ngTemplateOutlet]="rootHost"></div>-->
 <!--</ng-template>-->
-<ng-template #rootHost let-exporterSelection="exporterSelection">
-  <app-report [report]="exporterSelection"></app-report>
+<ng-template #rootHost let-exporterSelection="exporterSelection" let-finData="finData">
+  <app-report [report]="exporterSelection" [finData]="finData"></app-report>
 </ng-template>
 
 

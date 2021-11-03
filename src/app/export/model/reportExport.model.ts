@@ -25,6 +25,7 @@ export class ReportExport implements ExportModel {
       if (!exporterSelection.selected) {
         if (exporterSelection.reportPart.noTag() || exporterSelection.reportPart.hasTag(tag)) {
           exporterSelection.selected = true;
+          exporterSelection.tag = tag;
         }
         this.propagateSelection(exporterSelection, tags);
       }
@@ -51,10 +52,12 @@ export class ReportExport implements ExportModel {
     const parent = exporterSelection.parent;
     if (parent) {
       parent.exported = true;
+      if (parent.tag === null) {
+        parent.tag = exporterSelection.tag;
+      }
       this.markParentsForExport(parent);
     }
   }
-
 
 
 }
