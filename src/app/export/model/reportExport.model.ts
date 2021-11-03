@@ -2,6 +2,7 @@ import {ExportModel} from "./export.model";
 import {ReportPart} from "../../models/reportPart.model";
 import {ReportTag} from "../../models/reportTag.model";
 import {ExporterSelection} from "./exporterSelection.model";
+import {TagSelectionModel} from "./tagSelection.model";
 
 export class ReportExport implements ExportModel {
 
@@ -9,32 +10,33 @@ export class ReportExport implements ExportModel {
   constructor() {
   }
 
-  getExporterSelection(reportPart: ReportPart, tags: ReportTag[]): ExporterSelection {
+  getExporterSelection(reportPart: ReportPart, tagSelectionModel: TagSelectionModel): ExporterSelection {
     const exporterSelection = ExporterSelection.recursivlyFromReportPart(reportPart);
-    this.markSelected(exporterSelection, tags);
+    this.markSelected(exporterSelection, tagSelectionModel);
     this.markExported(exporterSelection);
     return exporterSelection;
   }
 
-  markSelected(exporterSelection: ExporterSelection, tags: ReportTag[]) {
-    if (!tags || tags.length === 0) {
+  markSelected(exporterSelection: ExporterSelection, tagSelectionModel: TagSelectionModel) {
+    if (tagSelectionModel.isEmpty()) {
       exporterSelection.selected = true;
-      this.propagateSelection(exporterSelection, tags);
+      this.propagateSelection(exporterSelection, tagSelectionModel);
     }
-    tags.forEach(tag => {
+    tagSelectionModel.selectedTags().forEach(selectorTag => {
       if (!exporterSelection.selected) {
-        if (exporterSelection.reportPart.noTag() || exporterSelection.reportPart.hasTag(tag)) {
+        if (exporterSelection.reportPart.noTag() ||
+          tagSelectionModel.isMatched(selectorTag, exporterSelection.reportPart.tags)) {
           exporterSelection.selected = true;
-          exporterSelection.tag = tag;
+          exporterSelection.tag = selectorTag;
         }
-        this.propagateSelection(exporterSelection, tags);
+        this.propagateSelection(exporterSelection, tagSelectionModel);
       }
     });
   }
 
-  private propagateSelection(exporterSelection: ExporterSelection, tags: ReportTag[]) {
+  private propagateSelection(exporterSelection: ExporterSelection, tagSelectionModel: TagSelectionModel) {
     exporterSelection.children.forEach(c => {
-      this.markSelected(c, tags);
+      this.markSelected(c, tagSelectionModel);
     });
   }
 

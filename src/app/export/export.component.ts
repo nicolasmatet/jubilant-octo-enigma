@@ -18,6 +18,7 @@ import {SummaryPart} from "../report-summary/models/summaryPart.interface";
 import {DomPortal, DomPortalOutlet, PortalOutlet, TemplatePortal} from "@angular/cdk/portal";
 import {DataframeModel} from "../models/dataframe.model";
 import {FinDataService} from "../services/fin-data.service";
+import {HierarchicalTagSelectionModel, IdentityTagSelectionModel} from "./model/tagSelection.model";
 
 export interface ExportDialogData {
   reportPart: ReportPart
@@ -65,7 +66,10 @@ export class ExportComponent implements OnInit {
   }
 
   export() {
-    const exportSelection: ExporterSelection = this.exporter.getExporterSelection(this.reportPart, this.taggedItem.reportPart.tags);
+    // const tagSelectionModel = new IdentityTagSelectionModel(this.taggedItem.reportPart.tags)
+    const tagSelectionModel = new HierarchicalTagSelectionModel(this.taggedItem.reportPart.tags);
+    tagSelectionModel.setTagTree(this.tagTree);
+    const exportSelection: ExporterSelection = this.exporter.getExporterSelection(this.reportPart, tagSelectionModel);
     const dataSource = this.getDataSource(this.dataFile);
     this.render(exportSelection, dataSource);
   }
