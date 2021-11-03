@@ -7,7 +7,7 @@ import {
   OnInit, TemplateRef,
   ViewChild, ViewContainerRef
 } from '@angular/core';
-import {ReportTag} from "../models/reportTag.model";
+import {ReportTag, TagGraph} from "../models/reportTag.model";
 import {TagService} from "../services/tag.service";
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {ExportModel} from "./model/export.model";
@@ -34,6 +34,7 @@ export class ExportComponent implements OnInit {
   reportPart!: ReportPart;
 
   allTags: ReportTag[] = [];
+  tagTree: TagGraph;
   // @ViewChild(PartHostDirective, {static: true}) rootHost!: PartHostDirective;
   @ViewChild("iframe") iframe: any;
   @ViewChild('rootHost') templatePortalContent!: TemplateRef<unknown>;
@@ -53,6 +54,7 @@ export class ExportComponent implements OnInit {
     tagService.subjectAllTags.subscribe(allTags => {
       this.allTags = allTags;
     });
+    this.tagTree = this.tagService.getTagTree();
     this.allDataFiles = this.finDataService.getDataFiles();
     this.dataFile = this.allDataFiles[0];
     this.reportPart = data.reportPart;
