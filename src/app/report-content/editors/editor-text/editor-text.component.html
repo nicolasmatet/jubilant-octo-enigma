@@ -1,8 +1,7 @@
-<span
-  (input)="onChange($event)"
-  (keydown)="onChange($event)"
-  (click)="onChange($event)"
-  (change)="save()"
-  [contentEditable]="true">
-  {{value}}
+<span #content
+      (input)="onChange($event)"
+      (keydown)="onChange($event)"
+      (click)="onChange($event)"
+      [contentEditable]="true">
+  {{text}}
 </span>

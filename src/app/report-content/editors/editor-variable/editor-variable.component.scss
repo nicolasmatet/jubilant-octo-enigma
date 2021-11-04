@@ -1,6 +1,17 @@
 .example-insert{
   white-space: nowrap;
+  padding-left: 40px;
+  padding-right: 40px;
+}
+
+.example-insert:hover{
+  padding-right: 0;
 }
 .var-icon{
   vertical-align: middle;
+  cursor: pointer;
+}
+.deletebutton{
+  position: relative;
+  right: 0;
 }

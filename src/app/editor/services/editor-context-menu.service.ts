@@ -1,4 +1,4 @@
-import { ComponentRef,  Injectable} from '@angular/core';
+import {ComponentRef, Injectable} from '@angular/core';
 import {ContextMenu} from "../../context-menu/models/context-menu.model";
 import {EditorContextMenu} from "../models/editorContextMenu";
 import {EditorContextMenuData} from "../interfaces/editor-context-menu-data.interface";
@@ -27,10 +27,7 @@ export class EditorContextMenuService {
     if (editor.contentHandler.currentComponentRef === null) {
       return;
     }
-    editor.contentHandler.createVariable(
-      editor.host,
-      editor.contentHandler.currentComponentRef,
-      editor.contentHandler.content);
+    editor.contentHandler.createVariable(editor.host, editor.contentHandler.currentComponentRef);
   }
 
 

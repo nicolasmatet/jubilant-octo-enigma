@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
 import {Subject} from "rxjs";
 import {ReportContentEditorComponent} from "../../../models/reportPartContent";
 
@@ -12,17 +12,17 @@ export class EditorTextComponent implements OnInit, ReportContentEditorComponent
   @Input() value!: any;
   selected!: Subject<boolean>;
   caret: number[] = [0, 0];
+  @ViewChild('content') textContainer!: ElementRef;
+  @Output('change') change: EventEmitter<string> = new EventEmitter<string>();
 
-  // @Output('change') change: EventEmitter<string> = new EventEmitter<string>();
-
+  text = ''
   constructor() {
   }
 
   ngOnInit(): void {
+    this.text = this.value.text;
   }
 
-  save() {
-  }
 
   node_walk(node: any, func: any) {
     let result = func(node);
@@ -81,7 +81,11 @@ export class EditorTextComponent implements OnInit, ReportContentEditorComponent
   onChange(event: any) {
     this.caret = this.getCaretPosition(event.target);
     this.selected.next(true);
-    console.log(event);
-    console.log("caret", this.caret);
+    this.save();
+  }
+
+  save() {
+    console.log("saving");
+    this.value.text = this.textContainer.nativeElement.innerText;
   }
 }

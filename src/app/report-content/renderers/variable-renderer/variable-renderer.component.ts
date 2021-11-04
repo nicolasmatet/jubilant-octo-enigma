@@ -13,6 +13,7 @@ export class VariableRendererComponent implements ReportContentRendererComponent
   }
 
   init(params: RendererParams): void {
+    console.log("VariableRendererComponent", params)
     this.value = params.value;
   }
 

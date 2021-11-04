@@ -6,6 +6,9 @@ export abstract class TagSelectionModel {
   abstract selectedTags(): ReportTag[];
 
   abstract isMatched(selectorTag: ReportTag, candidateTags: ReportTag[]): boolean;
+
+  abstract match(selectorTag: ReportTag, candidateTags: ReportTag[]): ReportTag | null;
+
 }
 
 export class IdentityTagSelectionModel implements TagSelectionModel {
@@ -30,6 +33,11 @@ export class IdentityTagSelectionModel implements TagSelectionModel {
     return idx >= 0;
   }
 
+  match(selectorTag: ReportTag, candidateTags: ReportTag[]): ReportTag | null {
+    const selectorId = selectorTag.getId();
+    const res = candidateTags.find(t => t.getId() === selectorId);
+    return res ? res : null;
+  }
 
 }
 
@@ -56,8 +64,15 @@ export class HierarchicalTagSelectionModel implements TagSelectionModel {
   }
 
   isMatched(selectorTag: ReportTag, candidateTags: ReportTag[]): boolean {
-    return candidateTags.some(tag => this.tagTree.hasParent(tag, selectorTag));
+    return candidateTags.some(tag => this._match(selectorTag, tag));
   }
 
+  match(selectorTag: ReportTag, candidateTags: ReportTag[]): ReportTag | null {
+    const res = candidateTags.find(tag => this._match(selectorTag, tag));
+    return res ? res : null;
+  }
 
+  private _match(selectorTag: ReportTag, otherTag: ReportTag) {
+    return selectorTag.getId() === otherTag.getId() || this.tagTree.hasParent(otherTag, selectorTag);
+  }
 }

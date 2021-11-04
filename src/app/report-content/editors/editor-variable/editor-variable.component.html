@@ -1,14 +1,5 @@
 <!--<app-tag-menu [taggedItems]="[taggedItem]"></app-tag-menu>-->
-<span class="example-insert" [contentEditable]="false">
-    <mat-icon class="var-icon">label</mat-icon>
-
-    <mat-form-field appearance="legacy">
-      <mat-label>tag</mat-label>
-      <mat-select [(value)]="value.tag">
-        <mat-option [value]="null">-- auto --</mat-option>
-        <mat-option [value]="tag" *ngFor="let tag of allTags">{{ tag | tagTitlePipe }}</mat-option>
-      </mat-select>
-    </mat-form-field>
+<span class="example-insert" [contentEditable]="false" (mouseenter)="showDeleteButton()" (mouseleave)="hideDeleteButton()">
 
     <mat-icon class="var-icon">calculate</mat-icon>
 
@@ -19,5 +10,17 @@
       </mat-select>
     </mat-form-field>
 
-  <button mat-icon-button (click)="delete()"><mat-icon>delete</mat-icon></button>
+
+  <mat-icon class="var-icon" (click)="toogleTagSelection()">label</mat-icon>
+
+    <mat-form-field appearance="legacy" *ngIf="tagSelectionEnabled">
+      <mat-label>tag</mat-label>
+      <mat-select [(value)]="value.tag">
+        <mat-option [value]="null">-- auto --</mat-option>
+        <mat-option [value]="tag" *ngFor="let tag of allTags">{{ tag | tagTitlePipe }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+
+  <button class="deletebutton" mat-icon-button *ngIf="showDelete" (click)="delete()"><mat-icon>delete</mat-icon></button>
 </span>

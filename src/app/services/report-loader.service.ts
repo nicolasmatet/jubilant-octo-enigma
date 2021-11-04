@@ -10,7 +10,7 @@ import {VariableValueGetterModel} from "../report-content/variableValueGetter.mo
 import {EditorTextComponent} from "../report-content/editors/editor-text/editor-text.component";
 import {EditorVariableComponent} from "../report-content/editors/editor-variable/editor-variable.component";
 import {ReportTag} from "../models/reportTag.model";
-import {EditorVariableInterface} from "../editor/interfaces/editorVariable.interface";
+import {EditorTextInterface, EditorVariableInterface} from "../editor/interfaces/editorVariable.interface";
 
 
 @Injectable({
@@ -21,11 +21,11 @@ export class ReportLoaderService {
   constructor(private tagService: TagService) {
   }
 
-  getParagraph(text: string): ReportPartContent<string> {
+  getParagraph(text: string): ReportPartContent<EditorTextInterface> {
     return {
       editor: EditorTextComponent,
       renderer: TextRendrerComponent,
-      value: text
+      value: {text: text}
     };
   }
 

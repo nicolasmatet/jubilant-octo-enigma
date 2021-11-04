@@ -24,10 +24,12 @@ export class ReportExport implements ExportModel {
     }
     tagSelectionModel.selectedTags().forEach(selectorTag => {
       if (!exporterSelection.selected) {
-        if (exporterSelection.reportPart.noTag() ||
-          tagSelectionModel.isMatched(selectorTag, exporterSelection.reportPart.tags)) {
+        if (exporterSelection.reportPart.noTag()) {
           exporterSelection.selected = true;
           exporterSelection.tag = selectorTag;
+        } else if (tagSelectionModel.isMatched(selectorTag, exporterSelection.reportPart.tags)) {
+          exporterSelection.selected = true;
+          exporterSelection.tag = tagSelectionModel.match(selectorTag, exporterSelection.reportPart.tags);
         }
         this.propagateSelection(exporterSelection, tagSelectionModel);
       }

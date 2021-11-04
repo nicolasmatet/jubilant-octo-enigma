@@ -1,7 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import {DataframeModel} from "../../../models/dataframe.model";
 import {RendererParams, ReportContentRendererComponent, ReportPartContent} from "../../../models/reportPartContent";
-import {ExporterSelection} from "../../../export/model/exporterSelection.model";
+import {EditorTextInterface} from "../../../editor/interfaces/editorVariable.interface";
 
 @Component({
   selector: 'app-text-rendrer',
@@ -10,7 +9,7 @@ import {ExporterSelection} from "../../../export/model/exporterSelection.model";
 })
 export class TextRendrerComponent implements ReportContentRendererComponent {
 
-  value = '';
+  value: EditorTextInterface = {text: ''};
 
   constructor() {
   }

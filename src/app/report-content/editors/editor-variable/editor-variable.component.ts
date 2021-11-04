@@ -19,19 +19,32 @@ export class EditorVariableComponent implements OnInit, ReportContentEditorCompo
   caret = [0, 0];
   allTags: ReportTag[] = [];
   allVars: ReportTag[] = [];
+  showDelete = false;
+  tagSelectionEnabled = false;
 
   constructor(private tagService: TagService) {
     this.allTags = this.tagService.getAllTags();
     this.allVars = this.tagService.getAllVars();
+  }
 
+  toogleTagSelection() {
+    this.tagSelectionEnabled = !this.tagSelectionEnabled;
+    this.value.tag = null;
   }
 
   ngOnInit(): void {
+    this.tagSelectionEnabled = !!this.value.tag;
   }
 
   delete() {
     this.deleted.next(true);
   }
 
+  showDeleteButton() {
+    this.showDelete = true;
+  }
 
+  hideDeleteButton() {
+    this.showDelete = false;
+  }
 }
