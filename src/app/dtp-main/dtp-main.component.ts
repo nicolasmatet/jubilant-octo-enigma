@@ -17,12 +17,9 @@ import {MatDialog} from "@angular/material/dialog";
 export class DtpMainComponent implements OnInit {
 
   report!: ReportPart;
-  contextMenu = this.contextMenuService.getSummaryContextMenu();
   exporter = new ReportExport();
-  selectionModel: SelectionModel<SummaryPart> = new MultipleSelectionModel();
 
   constructor(private reportLoader: ReportLoaderService,
-              private contextMenuService: SummaryContextMenuService,
               private dialog: MatDialog) {
     this.report = this.reportLoader.getReport();
   }
@@ -37,5 +34,9 @@ export class DtpMainComponent implements OnInit {
         exporter: this.exporter
       }
     });
+  }
+
+  save() {
+    this.reportLoader.saveReport(this.report);
   }
 }

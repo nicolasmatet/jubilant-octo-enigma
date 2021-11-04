@@ -10,6 +10,13 @@ export interface ReportComponent {
   finData: DataframeModel;
 }
 
+export interface SerializedReportPart {
+  type: string;
+  title: string;
+  tags: any[];
+  content: ReportPartContent<any>[];
+  children: SerializedReportPart[]
+}
 
 export abstract class ReportPart {
   set children(children: ReportPart[]) {
@@ -21,10 +28,10 @@ export abstract class ReportPart {
     return this._children;
   }
 
+  partType: string = '';
   component!: Type<ReportComponent>;
   icon: string = '';
   content: ReportPartContent<any>[] = [];
-
   tags: ReportTag[] = [];
   uId: string = uuid.v4();
   title: string = "Untitled";
@@ -85,10 +92,23 @@ export abstract class ReportPart {
       }
     }
   }
+
+  serialize(): SerializedReportPart {
+    const current: any = {};
+    current['type'] = this.partType;
+    current['title'] = this.title;
+    current['tags'] = this.tags;
+    current['content'] = this.content;
+    current['children'] = this._children.map(c => c.serialize());
+    return current;
+  }
 }
 
 export class ReportRoot extends ReportPart {
+  partType = 'root';
+
   constructor() {
     super('');
   }
+
 }

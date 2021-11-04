@@ -3,6 +3,15 @@ import {BehaviorSubject, Subject} from "rxjs";
 import {ReportTag, StringTagModel, StringVarModel, TagGraph, TagTree} from "../models/reportTag.model";
 
 @Pipe({
+  name: 'tagIdPipe'
+})
+export class TagIdPipe implements PipeTransform {
+  transform(tag: ReportTag): any {
+    return tag.getId();
+  }
+}
+
+@Pipe({
   name: 'tagTitlePipe'
 })
 export class TagTitlePipe implements PipeTransform {
@@ -11,6 +20,27 @@ export class TagTitlePipe implements PipeTransform {
   }
 }
 
+@Pipe({
+  name: 'tagTreeDirectChildren'
+})
+export class TagTreeDirectChildrenPipe implements PipeTransform {
+  transform(tagTree: TagGraph, tag: ReportTag): any {
+    console.log("TagTreeDirectChildrenPipe", tagTree, tag);
+    const children = tagTree.getChildren(tag);
+    console.log("TagTreeDirectChildrenPipe children", children);
+    return children;
+
+  }
+}
+
+@Pipe({
+  name: 'tagTreeDirectParents'
+})
+export class TagTreeDirectParentsPipe implements PipeTransform {
+  transform(tagTree: TagGraph, tag: ReportTag): any {
+    return tagTree.getParents(tag);
+  }
+}
 
 @Injectable({
   providedIn: 'root'
@@ -23,62 +53,66 @@ export class TagService {
   public subjectAllTags = this._subjectAllTags.asObservable();
   public subjectAllVars = this._subjectAllVars.asObservable();
 
-  private countryTags = [
-    new StringTagModel('france'),
-    new StringTagModel('allemagne'),
-    new StringTagModel('espagne'),
-    new StringTagModel('belgique'),
-    new StringTagModel('italie'),
-    new StringTagModel('luxembourg'),
-    new StringTagModel('pays-bas'),
-    new StringTagModel('suisse'),
-    new StringTagModel('republique tcheque'),
-    new StringTagModel('slovaquie'),
-    new StringTagModel('danemark'),
-    new StringTagModel('suede')
+  private allTagIds = [
+    'france',
+    'allemagne',
+    'espagne',
+    'belgique',
+    'italie',
+    'luxembourg',
+    'pays-bas',
+    'suisse',
+    'republique tcheque',
+    'slovaquie',
+    'danemark',
+    'suede',
+    'BU1',
+    'BU2',
+    'BU3',
+    'france - BU1',
+    'france - BU2',
+    'allemagne - BU1',
+    'allemagne - BU2'
   ];
 
-  private buTags = [
-    new StringTagModel('BU1'),
-    new StringTagModel('BU2'),
-    new StringTagModel('BU3'),
+  private allTagsRelations = [
+    {parent: 'france', child: 'france - BU1'},
+    {parent: 'france', child: 'france - BU2'},
+    {parent: 'allemagne', child: 'allemagne - BU1'},
+    {parent: 'allemagne', child: 'allemagne - BU2'}
   ];
-
-  private parentsTags = [
-    [this.countryTags[0], this.buTags[0]],
-    [this.countryTags[0], this.buTags[1]],
-    [this.countryTags[0], this.buTags[2]],
-    [this.countryTags[1], this.buTags[0]],
-    [this.countryTags[1], this.buTags[1]],
-    [this.countryTags[1], this.buTags[2]],
-  ];
-
-  private childrenTags = this.parentsTags.map(parents => this.tagFromParents(parents));
 
   allTags: ReportTag[];
-  tagTree: TagGraph;
-  allVariables = [
-    new StringVarModel('Revenue Related Parties'),
-    new StringVarModel('Revenue Unrelated Parties'),
-    new StringVarModel('Revenue Total'),
-    new StringVarModel('Profit Before Tax'),
-    new StringVarModel('Income Tax Due'),
-    new StringVarModel('Income Tax Accrued'),
-    new StringVarModel('Tangible Assets'),
-    new StringVarModel('Accumulated earnings'),
-    new StringVarModel('Number of Employees'),
+  allVariables: ReportTag[];
+  private allVariablesIds = [
+    'Revenue Related Parties',
+    'Revenue Unrelated Parties',
+    'Revenue Total',
+    'Profit Before Tax',
+    'Income Tax Due',
+    'Income Tax Accrued',
+    'Tangible Assets',
+    'Accumulated earnings',
+    'Number of Employees'
   ];
 
+  tagTree: TagGraph;
+
+  private tagMap: Map<any, ReportTag> = new Map<any, ReportTag>();
 
   constructor() {
-    this.allTags = [...this.countryTags, ...this.buTags, ...this.childrenTags];
+    this.allTags = this.allTagIds.map(t => new StringTagModel(t));
+    this.allTags.forEach(t => this.tagMap.set(t.getId(), t));
+    this.allVariables = this.allVariablesIds.map(t => new StringVarModel(t));
+
     this.tagTree = new TagTree();
     this.tagTree.addTags(...this.allTags);
-    this.childrenTags.forEach((c, idx) => {
-      const parents = this.parentsTags[idx];
-      parents.forEach(p => {
-        this.tagTree.addRelation(p, c);
-      });
+    this.allTagsRelations.forEach(({parent, child}) => {
+      const parentTag = this.tagMap.get(parent);
+      const childTag = this.tagMap.get(child);
+      if (parentTag && childTag) {
+        this.tagTree.addRelation(parentTag, childTag);
+      }
     });
 
     this._subjectAllTags.next(this.allTags);
@@ -86,6 +120,9 @@ export class TagService {
     this._subjectAllVars.next(this.allVariables);
   }
 
+  load(tagId: any) {
+    return this.allTags.find(t => t.getId() === tagId);
+  }
 
   getAllTags(): ReportTag[] {
     return this._subjectAllTags.getValue();
@@ -97,6 +134,10 @@ export class TagService {
 
   getTagTree(): TagGraph {
     return this.tagTree;
+  }
+
+  createTag(tagId: any): ReportTag {
+    return new StringTagModel(tagId);
   }
 
   tagFromParents(parents: ReportTag[]) {

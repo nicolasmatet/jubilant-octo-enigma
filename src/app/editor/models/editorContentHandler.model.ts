@@ -1,14 +1,13 @@
 import {PartHostDirective} from "../../directives/part-host.directive";
 import {ComponentRef, Type} from "@angular/core";
-import {ReportContentEditorComponent, ReportPartContent} from "../../models/reportPartContent";
+import {
+  ReportContentEditorComponent,
+  ReportContentSettings,
+  ReportContentType,
+  ReportPartContent
+} from "../../models/reportPartContent";
 import {Subject} from "rxjs";
-import {VariableRendererComponent} from "../../report-content/renderers/variable-renderer/variable-renderer.component";
-import {EditorVariableComponent} from "../../report-content/editors/editor-variable/editor-variable.component";
 import {EditorTextInterface, EditorVariableInterface} from "../interfaces/editorVariable.interface";
-import {ReportTag} from "../../models/reportTag.model";
-import {VariableValueGetterModel} from "../../report-content/variableValueGetter.model";
-import {EditorTextComponent} from "../../report-content/editors/editor-text/editor-text.component";
-import {TextRendrerComponent} from "../../report-content/renderers/text-rendrer/text-rendrer.component";
 
 export class EditorContentHandlerModel {
   currentComponentRef: ComponentRef<ReportContentEditorComponent> | null = null;
@@ -77,26 +76,17 @@ export class EditorContentHandlerModel {
     const ref2 = this.createComponent(host, componentRef.componentType, valueAfter, idx + 1);
     const previousContent = content[idx];
     content.splice(idx, 2,
-      {editor: previousContent.editor, renderer: previousContent.renderer, value: valueBefore},
-      {editor: previousContent.editor, renderer: previousContent.renderer, value: valueAfter});
+      {type: previousContent.type, value: valueBefore}, {type: previousContent.type, value: valueAfter});
     return [ref1, ref2];
   }
 
   createVariable(host: PartHostDirective, componentRef: ComponentRef<ReportContentEditorComponent>) {
     const refs = this.splitComponent(host, componentRef, this.content);
     const idx = this.getIndex(host, refs[0]);
-    const editor = EditorVariableComponent;
+    const editor = ReportContentSettings[ReportContentType.variable].editor;
     const value: EditorVariableInterface = {tag: null, varName: null};
     this.createComponent(host, editor, value, idx + 1);
-    this.content.splice(idx + 1, 0, this.getVariable(value));
+    this.content.splice(idx + 1, 0, {type: ReportContentType.variable, value: value});
   }
 
-  getVariable(value: EditorVariableInterface): ReportPartContent<EditorVariableInterface> {
-    return {
-      editor: EditorVariableComponent,
-      renderer: VariableRendererComponent,
-      valueGetter: new VariableValueGetterModel(),
-      value: value
-    };
-  }
 }

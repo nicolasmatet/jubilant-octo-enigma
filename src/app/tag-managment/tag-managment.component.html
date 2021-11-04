@@ -1,0 +1,51 @@
+<div class="wrapper">
+  <div class="title">tag management</div>
+
+  <div fxLayout="row" fxLayoutAlign="space-between center">
+    <div>
+      <div>Parent -> Children</div>
+      <div *ngFor="let rootTag of rootTags"
+           [ngTemplateOutlet]="tagTreeChildrenTemplate"
+           [ngTemplateOutletContext]="{tagTree:tagTree, currentTag: rootTag}">
+      </div>
+    </div>
+
+    <div>
+      <div>Child -> Parents</div>
+      <div *ngFor="let leafTag of leafTags"
+           [ngTemplateOutlet]="tagTreeParentTemplate"
+           [ngTemplateOutletContext]="{tagTree:tagTree, currentTag: leafTag}">
+      </div>
+    </div>
+
+
+  </div>
+</div>
+
+
+<ng-template #tagTreeChildrenTemplate let-tagTree="tagTree" let-currentTag="currentTag">
+  <div class="parent">{{currentTag | tagTitlePipe}}</div>
+  <div class="child" *ngFor="let childTag of (tagTree.getChildren(currentTag)) ">
+    <div [ngTemplateOutlet]="tagTreeChildrenTemplate"
+         [ngTemplateOutletContext]="{tagTree:tagTree, currentTag: childTag}"></div>
+  </div>
+  <div class="child">
+    <button mat-button (click)="addChild(currentTag)">
+      Add child
+    </button>
+  </div>
+</ng-template>
+
+
+<ng-template #tagTreeParentTemplate let-tagTree="tagTree" let-currentTag="currentTag">
+  <div class="parent">{{currentTag | tagTitlePipe}}</div>
+  <div class="child" *ngFor="let parentTag of (tagTree.getParents(currentTag)) ">
+    <div [ngTemplateOutlet]="tagTreeParentTemplate"
+         [ngTemplateOutletContext]="{tagTree:tagTree, currentTag: parentTag}"></div>
+  </div>
+  <div class="child">
+    <button mat-button (click)="addParent(currentTag)">
+      Add parent
+    </button>
+  </div>
+</ng-template>

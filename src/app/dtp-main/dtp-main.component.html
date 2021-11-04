@@ -1,31 +1,28 @@
 <mat-toolbar color="primary">
-  <span>    <mat-icon>task</mat-icon>DTP Leaf</span>
+
+  <span class="title" [routerLink]="'/'">
+    <mat-icon [style.vertical-align]="'middle'">task</mat-icon>
+    <span [style.vertical-align]="'middle'">DTP Leaf</span>
+  </span>
+
+  <button mat-icon-button (click)="save()" [matTooltip]="'Save Report'">
+    <mat-icon>save</mat-icon>
+  </button>
+
+  <button mat-icon-button (click)="export()" [matTooltip]="'Download report'">
+    <mat-icon>file_download</mat-icon>
+  </button>
+
   <span fxFlex="1 1 auto"></span>
 
-  <button mat-raised-button (click)="export()">
-    <mat-icon>file_download</mat-icon>
-    Download report
+      <button mat-button [routerLink]="'managetags'" [matTooltip]="'Manage tags'">
+    <mat-icon>edit</mat-icon> Manage tags
   </button>
+
+
 
 </mat-toolbar>
 
-<div [fxLayout.gt-md]="'row'" [fxLayout.lt-md]="'column'">
-  <div [fxFlex.gt-md]="'1 1 400px'"
-       [fxFlex.lt-md]="'0 1 400px'"
-       [class.gt-md]="'report-summary'"
-       [class.lt-md]="'report-summary-sm'">
-    <app-report-summary
-      [report]="report"
-      [contextMenu]="contextMenu"
-      [selectionModel]="selectionModel"
-    >
-    </app-report-summary>
-  </div>
-
-  <div class="report-editor">
-    <app-editor></app-editor>
-  </div>
-</div>
-
+<router-outlet></router-outlet>
 
 

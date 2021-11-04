@@ -1,9 +1,9 @@
 import {Injectable} from '@angular/core';
 import {Section} from "../models/section";
 import {Paragraph} from "../models/paragraph.model";
-import {ReportRoot} from "../models/reportPart.model";
+import {ReportPart, ReportRoot, SerializedReportPart} from "../models/reportPart.model";
 import {TagService} from "./tag.service";
-import {ReportPartContent} from "../models/reportPartContent";
+import {ReportContentType, ReportPartContent} from "../models/reportPartContent";
 import {TextRendrerComponent} from "../report-content/renderers/text-rendrer/text-rendrer.component";
 import {VariableRendererComponent} from "../report-content/renderers/variable-renderer/variable-renderer.component";
 import {VariableValueGetterModel} from "../report-content/variableValueGetter.model";
@@ -23,17 +23,14 @@ export class ReportLoaderService {
 
   getParagraph(text: string): ReportPartContent<EditorTextInterface> {
     return {
-      editor: EditorTextComponent,
-      renderer: TextRendrerComponent,
+      type: ReportContentType.text,
       value: {text: text}
     };
   }
 
   getVariable(tag: ReportTag | null, varName: ReportTag | null): ReportPartContent<EditorVariableInterface> {
     return {
-      editor: EditorVariableComponent,
-      renderer: VariableRendererComponent,
-      valueGetter: new VariableValueGetterModel(),
+      type: ReportContentType.variable,
       value: {tag: tag, varName: varName}
     };
   }
@@ -89,5 +86,49 @@ export class ReportLoaderService {
     section1.addChildren(pA, subSection);
     root.addChildren(pIntro, section1);
     return root;
+  }
+
+  saveReport(report: ReportRoot): void {
+    const jsonReport = JSON.stringify(report.serialize());
+    console.log("jsonReport", jsonReport);
+    localStorage.setItem('report__demo1', jsonReport);
+  }
+
+  loadReport(reportName: string): ReportPart | null {
+    const jsonReport = localStorage.getItem('report__' + reportName);
+    if (!jsonReport) {
+      return null;
+    }
+    const obj: SerializedReportPart = JSON.parse(jsonReport);
+    return this.deserialize(obj);
+  }
+
+  // type: string;
+  // title: string;
+  // tags: any[];
+  // content: ReportPartContent<any>[];
+  // children: SerializedReportPart[]
+
+  private deserialize(reportObj: SerializedReportPart): ReportPart {
+    const reportPart = this.getEmptyReportPart(reportObj);
+    // @ts-ignore
+    reportPart.tags = reportObj.tags.map(tagId => this.tagService.load(tagId)).filter(t => t !== undefined);
+    reportPart.content = reportObj.content;
+    reportPart.children = reportObj.children.map(c => this.deserialize(c));
+    return reportPart;
+  }
+
+
+  private getEmptyReportPart(reportObj: SerializedReportPart): ReportPart {
+    switch (reportObj.type) {
+      case 'root':
+        return new ReportRoot();
+      case 'paragraph':
+        return new Paragraph(reportObj.title);
+      case 'section':
+        return new Section(reportObj.title);
+      default:
+        return new Paragraph(reportObj.title);
+    }
   }
 }

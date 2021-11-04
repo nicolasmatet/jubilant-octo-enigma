@@ -25,7 +25,7 @@ import {EditorPageComponent} from './editor/editor-page/editor-page.component';
 import {MatTabsModule} from "@angular/material/tabs";
 import {MatCardModule} from "@angular/material/card";
 import {MatButtonModule} from "@angular/material/button";
-import {TagTitlePipe} from "./services/tag.service";
+import {TagIdPipe, TagTitlePipe, TagTreeDirectChildrenPipe, TagTreeDirectParentsPipe} from "./services/tag.service";
 import {TagMenuComponent} from './report-summary/tag-menu/tag-menu.component';
 import {MatCheckboxModule} from "@angular/material/checkbox";
 import {MatTooltipModule} from "@angular/material/tooltip";
@@ -38,6 +38,8 @@ import { TextRendrerComponent } from './report-content/renderers/text-rendrer/te
 import { VariableRendererComponent } from './report-content/renderers/variable-renderer/variable-renderer.component';
 import {EditorVariableComponent} from "./report-content/editors/editor-variable/editor-variable.component";
 import {EditorTextComponent} from "./report-content/editors/editor-text/editor-text.component";
+import { TagManagmentComponent } from './tag-managment/tag-managment.component';
+import { ReportEditionComponent } from './report-edition/report-edition.component';
 
 @NgModule({
   declarations: [
@@ -52,13 +54,18 @@ import {EditorTextComponent} from "./report-content/editors/editor-text/editor-t
     EditorComponent,
     EditorPageComponent,
     TagTitlePipe,
+    TagIdPipe,
+    TagTreeDirectParentsPipe,
+    TagTreeDirectChildrenPipe,
     TagMenuComponent,
     ExportComponent,
     ContextMenuComponent,
     EditorVariableComponent,
     EditorTextComponent,
     TextRendrerComponent,
-    VariableRendererComponent
+    VariableRendererComponent,
+    TagManagmentComponent,
+    ReportEditionComponent
   ],
   imports: [
     CommonModule,

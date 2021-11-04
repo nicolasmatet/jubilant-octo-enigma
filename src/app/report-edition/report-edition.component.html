@@ -1,0 +1,19 @@
+<div [fxLayout.gt-md]="'row'" [fxLayout.lt-md]="'column'">
+  <div [fxFlex.gt-md]="'1 1 400px'"
+       [fxFlex.lt-md]="'0 1 400px'"
+       [class.gt-md]="'report-summary'"
+       [class.lt-md]="'report-summary-sm'">
+    <app-report-summary
+      [report]="report"
+      [contextMenu]="contextMenu"
+      [selectionModel]="selectionModel"
+    >
+    </app-report-summary>
+  </div>
+
+  <div class="report-editor">
+    <app-editor></app-editor>
+  </div>
+
+</div>
+

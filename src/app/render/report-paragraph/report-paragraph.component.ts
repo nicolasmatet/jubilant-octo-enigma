@@ -3,7 +3,7 @@ import {ReportComponent} from "../../models/reportPart.model";
 import {ExporterSelection} from "../../export/model/exporterSelection.model";
 import {DataframeModel} from "../../models/dataframe.model";
 import {PartHostDirective} from "../../directives/part-host.directive";
-import {ReportContentRendererComponent, ReportPartContent} from "../../models/reportPartContent";
+import {ReportContentRendererComponent, ReportContentSettings, ReportPartContent} from "../../models/reportPartContent";
 
 @Component({
   selector: 'app-report-paragraph',
@@ -26,9 +26,10 @@ export class ReportParagraphComponent implements OnInit, ReportComponent {
 
   renderContent(content: ReportPartContent<any>) {
     const rawValue = content.value;
-    const value = content.valueGetter ?
-      content.valueGetter.transform(rawValue, {data: this.finData, selection: this.selection}) : rawValue;
-    const componentFactory = this.componentFactoryResolver.resolveComponentFactory(content.renderer);
+    const contentDef = ReportContentSettings[content.type];
+    const value = contentDef.valueGetter ?
+      contentDef.valueGetter.transform(rawValue, {data: this.finData, selection: this.selection}) : rawValue;
+    const componentFactory = this.componentFactoryResolver.resolveComponentFactory(contentDef.renderer);
     const componentRef = this.contentHost.viewContainerRef.createComponent<ReportContentRendererComponent>(componentFactory);
     componentRef.instance.init(
       {
