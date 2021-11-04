@@ -37,7 +37,7 @@ export class ExportComponent implements OnInit {
   allTags: ReportTag[] = [];
   tagTree: TagGraph;
   // @ViewChild(PartHostDirective, {static: true}) rootHost!: PartHostDirective;
-  @ViewChild("iframe") iframe: any;
+  // @ViewChild("iframe") iframe: any;
   @ViewChild('rootHost') templatePortalContent!: TemplateRef<unknown>;
   taggedItem = new SummaryPart(new ReportPartFactory().getNewParagraph(''), {});
   dataFile: string = '';
@@ -80,16 +80,21 @@ export class ExportComponent implements OnInit {
 
   render(exporterSelection: ExporterSelection, finData: DataframeModel) {
     console.log("exporterSelection", exporterSelection);
-    const portalHost = this.getPortalHost();
+    const newWindow = window.open('', '_blank');
+    if (newWindow === null) {
+      console.error("could'n open a new window");
+      return;
+    }
+    const portalHost = this.getPortalHost(newWindow);
     const portal = new TemplatePortal(this.templatePortalContent, this.viewContainerRef, {
       exporterSelection: exporterSelection,
       finData: finData
     });
-    this._attachStyles(this.iframe.nativeElement.contentWindow);
+    this._attachStyles(newWindow);
     portalHost.attach(portal);
-    setTimeout(() => this.iframe.nativeElement.contentWindow.print(), 100);
-    this.iframe.nativeElement.contentWindow.onafterprint = () => {
-      this.iframe.nativeElement.contentDocument.body.innerHTML = "";
+    setTimeout(() => newWindow.print(), 100);
+    newWindow.onafterprint = () => {
+      newWindow.close();
     };
   }
 
@@ -114,9 +119,9 @@ export class ExportComponent implements OnInit {
     return styleSheetElement;
   }
 
-  private getPortalHost() {
+  private getPortalHost(window: Window) {
     return new DomPortalOutlet(
-      this.iframe.nativeElement.contentDocument.body,
+      window.document.body,
       this.componentFactoryResolver,
       this.appRef,
       this.injector
