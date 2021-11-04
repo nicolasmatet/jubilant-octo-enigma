@@ -19,8 +19,9 @@ export class ReportEditionComponent implements OnInit {
 
   constructor(private contextMenuService: SummaryContextMenuService,
               private reportLoader: ReportLoaderService) {
-    this.report = this.reportLoader.getReport();
-
+    this.reportLoader.reportSubject.subscribe(report => {
+      this.report = report;
+    });
   }
 
   ngOnInit(): void {

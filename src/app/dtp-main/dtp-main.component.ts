@@ -21,7 +21,10 @@ export class DtpMainComponent implements OnInit {
 
   constructor(private reportLoader: ReportLoaderService,
               private dialog: MatDialog) {
-    this.report = this.reportLoader.getReport();
+    this.reportLoader.getReport();
+    this.reportLoader.reportSubject.subscribe(report => {
+      this.report = report;
+    });
   }
 
   ngOnInit(): void {
@@ -38,5 +41,9 @@ export class DtpMainComponent implements OnInit {
 
   save() {
     this.reportLoader.saveReport(this.report);
+  }
+
+  load() {
+    this.reportLoader.loadReport('demo1');
   }
 }

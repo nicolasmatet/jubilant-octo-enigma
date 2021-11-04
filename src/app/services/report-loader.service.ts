@@ -11,12 +11,14 @@ import {EditorTextComponent} from "../report-content/editors/editor-text/editor-
 import {EditorVariableComponent} from "../report-content/editors/editor-variable/editor-variable.component";
 import {ReportTag} from "../models/reportTag.model";
 import {EditorTextInterface, EditorVariableInterface} from "../editor/interfaces/editorVariable.interface";
+import {BehaviorSubject, ReplaySubject, Subject} from "rxjs";
 
 
 @Injectable({
   providedIn: 'root'
 })
 export class ReportLoaderService {
+  reportSubject: ReplaySubject<ReportPart> = new ReplaySubject<ReportPart>(1);
 
   constructor(private tagService: TagService) {
   }
@@ -35,7 +37,7 @@ export class ReportLoaderService {
     };
   }
 
-  getReport(): ReportRoot {
+  getReport() {
     const allTags = this.tagService.getAllTags();
     const allVars = this.tagService.getAllVars();
 
@@ -85,7 +87,7 @@ export class ReportLoaderService {
     subSection.addChildren(pB, pC);
     section1.addChildren(pA, subSection);
     root.addChildren(pIntro, section1);
-    return root;
+    this.reportSubject.next(root);
   }
 
   saveReport(report: ReportRoot): void {
@@ -94,13 +96,15 @@ export class ReportLoaderService {
     localStorage.setItem('report__demo1', jsonReport);
   }
 
-  loadReport(reportName: string): ReportPart | null {
+  loadReport(reportName: string): void {
     const jsonReport = localStorage.getItem('report__' + reportName);
     if (!jsonReport) {
-      return null;
+      return;
     }
     const obj: SerializedReportPart = JSON.parse(jsonReport);
-    return this.deserialize(obj);
+    const report = this.deserialize(obj);
+    console.log("report", report);
+    this.reportSubject.next(report);
   }
 
   // type: string;
@@ -113,7 +117,7 @@ export class ReportLoaderService {
     const reportPart = this.getEmptyReportPart(reportObj);
     // @ts-ignore
     reportPart.tags = reportObj.tags.map(tagId => this.tagService.load(tagId)).filter(t => t !== undefined);
-    reportPart.content = reportObj.content;
+    reportPart.content = reportObj.content; // TODO: cast tag into ReportTag classes
     reportPart.children = reportObj.children.map(c => this.deserialize(c));
     return reportPart;
   }

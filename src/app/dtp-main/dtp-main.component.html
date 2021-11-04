@@ -9,6 +9,11 @@
     <mat-icon>save</mat-icon>
   </button>
 
+  <button mat-icon-button (click)="load()" [matTooltip]="'Load Report'">
+    <mat-icon>folder_open</mat-icon>
+  </button>
+
+
   <button mat-icon-button (click)="export()" [matTooltip]="'Download report'">
     <mat-icon>file_download</mat-icon>
   </button>
