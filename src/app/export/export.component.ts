@@ -94,7 +94,7 @@ export class ExportComponent implements OnInit {
     portalHost.attach(portal);
     setTimeout(() => newWindow.print(), 100);
     newWindow.onafterprint = () => {
-      newWindow.close();
+      // newWindow.close();
     };
   }
 

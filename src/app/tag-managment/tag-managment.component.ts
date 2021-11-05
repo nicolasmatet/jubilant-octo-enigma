@@ -36,6 +36,7 @@ export class TagManagmentComponent implements OnInit {
       console.log("closed", tagId);
       if (tagId && !this.tagTree.has(tagId)) {
         const newTag = this.tagService.createTag(tagId);
+        this.tagService.registerTag(newTag);
         console.log("newTag", newTag);
         this.tagTree.addTags(newTag);
         this.tagTree.addRelation(parentTag, newTag);
@@ -56,6 +57,7 @@ export class TagManagmentComponent implements OnInit {
       console.log("closed", tagId);
       if (tagId && !this.tagTree.has(tagId)) {
         const newTag = this.tagService.createTag(tagId);
+        this.tagService.registerTag(newTag)
         console.log("newTag", newTag);
         this.tagTree.addTags(newTag);
         this.tagTree.addRelation(newTag, childTag);

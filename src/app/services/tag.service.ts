@@ -140,6 +140,11 @@ export class TagService {
     return new StringTagModel(tagId);
   }
 
+  registerTag(tag: ReportTag) {
+    this.allTags.push(tag);
+    this._subjectAllTags.next(this.allTags);
+  }
+
   tagFromParents(parents: ReportTag[]) {
     return new StringTagModel(parents.map(p => p.getId()).join(' - '));
   }

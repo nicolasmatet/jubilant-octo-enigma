@@ -1,6 +1,6 @@
 <app-context-menu [contextMenu]="contextMenu"></app-context-menu>
 
-<div #editor
+<div #editor class="editor-area"
      (contextmenu)="contextMenu.showMenu($event, {host: editorHostRef, contentHandler:contentHandler})">
   <ng-container appPartHost>
   </ng-container>
